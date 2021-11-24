@@ -1,0 +1,336 @@
+{% extends 'base/base.html' %}
+{% block content %}
+{% with mensaje = get_flashed_messages() %}
+{% if mensaje %}
+{% for mensajes in mensaje %}
+    <center>
+    <div class="alert alert-primary" role="alert">
+        <strong>{{mensajes}}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div></center>
+
+
+{% endfor %}
+{% endif %}
+{% endwith %}
+    <!--Contenido de la página -->
+    <section class="highlight-phone">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="intro">
+                        <h2>Clínica dental en México con todas las especialidades<br></h2>
+                        <p style="text-align: justify;">Queremos ser tu dentista y probablemente lleves un tiempo pensando en llevar a cabo ese tratamiento dental que va a cambiar tu sonrisa. Para ello, lo más seguro es que estés buscando un profesional que te inspire confianza y seguridad.<br></p><a class="btn btn-primary" role="button" href="#cita">Agendar cita</a>
+                    </div>
+                </div>
+                <div class="col-sm-4"><img class="img-fluid" src="{{ url_for('static', filename= 'assets/img/img1.jpg')}}"></div>
+            </div>
+        </div>
+    </section>
+
+    <!--Tratamientos-->
+    <section class="features-clean">
+        <div class="container">
+            <div class="intro">
+                <a name="tratamiento"></a>
+                <h2 class="text-center">Tratamientos</h2>
+                <p class="text-center"><br><strong>Con nuestros tratamientos dentales volverás a sonreír con confianza</strong><br><br>Ofrecemos un servicio dental integral y contamos con todas las especialidades de la&nbsp;<strong>Odontología</strong>. Cada uno de los profesionales que trabajan en nuestro equipo se dedican exclusivamente a su especialidad<br></p>
+            </div>
+            <div class="row features">
+                <div class="col-sm-6 col-lg-4 item"><i class="fa fa-clock-o icon"></i>
+                    <h3 class="name">Diagnóstico y prevención<br></h3>
+                    <p><strong>$650.00 MXN</strong></p>
+                    <p class="description" style="text-align: justify;">En odontología prevenir es literalmente curar. Un diagnóstico a tiempo te ayudará a evitar patologías bucodentales más graves en el futuro.<br><br></p>
+                </div>
+                <div class="col-sm-6 col-lg-4 item"><i class="fa fa-smile-o icon"></i>
+                    <h3 class="name"><strong>Ortodoncia</strong><br></h3>
+                    <p><strong>$20,000.00 MXN</strong></p>
+                    <p class="description" style="text-align: justify;">Los tratamientos de ortodoncia realizan suaves movimientos que desplazan los dientes de forma individual o en bloque corrigiendo su posición.<br></p>
+                </div>
+                <div class="col-sm-6 col-lg-4 item"><i class="fa fa-thumbs-o-up icon"></i>
+                    <h3 class="name"><strong>Implantes Dentales</strong><br></h3>
+                    <p><strong>$6,000.00 MXN</strong></p>
+                    <p class="description" style="text-align: justify;">En las Clínicas Dentales de Sanitas los tratamientos de implantología y regeneración ósea son realizados por profesionales.<br></p>
+                </div>
+                <div class="col-sm-6 col-lg-4 item"><i class="fa fa-user-md icon"></i>
+                    <h3 class="name"><strong>Odontopediatría</strong><br></h3>
+                    <p><strong>$1,200.00 MXN</strong></p>
+                    <p class="description" style="text-align: justify;">La Odontopediatría es la rama de la Odontología encargada de tratar a los niños.<br></p>
+                </div>
+                <div class="col-sm-6 col-lg-4 item"><i class="fa fa-star icon"></i>
+                    <h3 class="name"><strong>Estética Dental</strong><br></h3>
+                    <p><strong>$3,000.00 MXN</strong></p>
+                    <p class="description" style="text-align: justify;">En DentalCare ponemos a su disposición diferentes tratamientos odontológicos que te ayudarán a mejorar la salud y apariencia de su boca.<br></p>
+                </div>
+                <div class="col-sm-6 col-lg-4 item"><i class="fa fa-stethoscope icon"></i>
+                    <h3 class="name"><strong>Periodoncia</strong><br></h3>
+                    <p><strong>$10,000.00 MXN</strong></p>
+                    <p class="description" style="text-align: justify;">La salud de las encías es el indicador de salud general de tu boca y está estrechamente relacionada con la salud de todo tu cuerpo.&nbsp;<br></p>
+                </div>
+            </div>
+        </div>
+
+        <!--Ubicación-->
+        <section class="map-clean" style="background: rgb(238,244,247);">
+            <div class="container">
+                <div class="intro">
+                    <a name="ubicacion"></a>
+                    <h2 class="text-center">Ubicación de las clínicas</h2>
+                    <p class="text-start"><strong>DentalCare Emiliano Zapta</strong><br>Av. Universidad Tecnológica 1, Palo Escrito, 62765 Emiliano Zapata, Mor.&nbsp;<br>&nbsp;<br><strong>DentalCare Cuernavaca</strong><br>Avenida Universidad No. 1001, Chamilpa, 62209 Cuernavaca, Mor.&nbsp;<br>&nbsp;<br><strong>DentalCare Jiutepec</strong><br>P.º Cuauhnáhuac 566, Lomas del Texcal, 62574 Jiutepec, Mor.&nbsp;<br>&nbsp;<br><strong>DentalCare Zacatepec</strong><br>Tecnológico 27, Plan de Ayala, 62780 Zacatepec de Hidalgo, Mor.</p>
+                </div>
+            </div><iframe allowfullscreen="" frameborder="0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCA5UwAlpttxU3r1S0ITLzY5T9efy4R7IE&amp;q=UTEZ&amp;zoom=15" width="100%" height="450"></iframe>
+        </section>
+
+        <!--Horario-->
+        <section class="highlight-clean" style="background: rgb(255,255,255);">
+            <div class="container">
+                <div class="intro">
+                    <a name="horario"></a>
+                    <h2 class="text-center">Horarios</h2>
+                    <p class="text-start">Matutino: 9:00 a 13:00 hrs. – La última atención es a las 14:00 hrs.<br>Vespertino: 15:00 a 19:00 hrs. – La última atención es a las 20:00 hrs.<br></p>
+                    <p style="font-size: 11px;"><em>*Las citas pueden durar 30 minutos o 1 hora dependiendo del servicio.</em><br></p>
+                </div>
+                <div class="buttons"><a class="btn btn-primary text-capitalize" role="button" href="#inicio">Inicio</a><a class="btn btn-primary text-capitalize" role="button" href="#cita" style="background: rgb(221,221,221); color: rgb(0,0,0);">Citas</a></div>
+            </div>
+        </section>
+
+        <!--Testimonios -->
+        <section class="testimonials-clean" style="background: rgb(238,244,247);">
+            <div class="container" style="background: rgb(238,244,247);">
+                <div class="intro">
+                    <a name="testimonio"></a>
+                    <h2 class="text-center">Testimonios</h2>
+                    <p class="text-center">Nos sentimos muy orgullosos de que los pacientes que tratamos compartan su satisfacción con nuestra clínica y nos recomiendan a sus familiares y amigos. A continuación, puedes ver algunas de sus valoraciones:<br></p>
+                </div>
+                <div class="row people">
+                    <div class="col-md-6 col-lg-4 item">
+                        <div class="box">
+                            <p class="description" style="text-align: justify;">Excelentes profesionales, absolutamente todos. Están obsesionados con la perfección, en el mejor sentido. Y<br></p>
+                        </div>
+                        <div class="author"><img class="rounded-circle" src="{{ url_for('static', filename= 'assets/img/1.jpg')}}">
+                            <h5 class="name">Ben Johnson</h5>
+                            <p class="title">Hace un año</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 item">
+                        <div class="box">
+                            <p class="description" style="text-align: justify;">Llevo ya más de 10 años con el equipo (grandes profesionales) y siempre me han dado una atención de 10.&nbsp;<br></p>
+                        </div>
+                        <div class="author"><img class="rounded-circle" src="{{ url_for('static', filename= 'assets/img/3.jpg')}}">
+                            <h5 class="name">Carl Kent</h5>
+                            <p class="title">Hace dos meses</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 item">
+                        <div class="box">
+                            <p class="description" style="text-align: justify;">De la Clínica DentalCare, solo les puedo dedicar alabanzas&nbsp;<br></p>
+                        </div>
+                        <div class="author"><img class="rounded-circle" src="{{ url_for('static', filename= 'assets/img/2.jpg')}}">
+                            <h5 class="name">Emily Clark</h5>
+                            <p class="title">Hace un año</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--Equipo de trabajo-->
+        <section class="team-boxed" style="background: rgb(255,255,255);">
+            <div class="container" style="background: rgb(255,255,255);">
+                <div class="intro">
+                    <a name="equipo"></a>
+                    <h2 class="text-center">Nuestro equipo</h2>
+                    <p class="text-center">Todos nuestros doctores ejercen profesionalmente cada una de sus especialidades – Ortodoncia, Periodoncia, Implantes dentales, Cirugía oral, Estética dental<br></p>
+                </div>
+                <div class="row people">
+                    <div class="col-md-6 col-lg-4 item">
+                        <div class="box"><img class="rounded-circle" src="{{ url_for('static', filename= 'assets/img/doctor-fernando-gomez-ferrer-bolinches-2018.jpg')}}">
+                            <h3 class="name">Dr. Fernando Gómez-Ferrer Bolinches</h3>
+                            <p class="description">Doctor en Medicina y Cirugía, Licenciado en Odontología y Especialista en Implantología, Cirugía y Rehabilitación Oral.</p>
+                            <div class="social"><a href="https://www.facebook.com/UTEZ.Morelos" target="_blank"><i class="fa fa-facebook-official"></i></a><a href="https://twitter.com/utez_morelos" target="_blank"><i class="fa fa-twitter"></i></a><a href="https://www.instagram.com/utezmorelos/" target="_blank"><i class="fa fa-instagram"></i></a></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 item">
+                        <div class="box" style="height: 446px;"><img class="rounded-circle" src="{{ url_for('static', filename= 'assets/img/dra-lidia-galan-lopez.jpg')}}">
+                            <h3 class="name">Dra. Diana Castro Crespo</h3>
+                            <p class="description">Endodoncista especializada.</p>
+                            <div class="social" style="margin-top: 83px;"><a href="https://www.facebook.com/UTEZ.Morelos" target="_blank"><i class="fa fa-facebook-official"></i></a><a href="https://twitter.com/utez_morelos" target="_blank"><i class="fa fa-twitter"></i></a><a href="https://www.instagram.com/utezmorelos/" target="_blank"><i class="fa fa-instagram"></i></a></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4 item">
+                        <div class="box" style="height: 447px;"><img class="rounded-circle" src="{{ url_for('static', filename= 'assets/img/dr-diana-castro-crespo-2018-clinica-dental-gomez-ferrer.jpg')}}">
+                            <h3 class="name">Dra. Lidia Galán López<br></h3>
+                            <p class="description">Odontóloga especialista en Ortodoncia Invisible y Ortopedia Dentofacial<br></p>
+                            <div class="social" style="margin-top: 67px;"><a href="https://www.facebook.com/UTEZ.Morelos" target="_blank"><i class="fa fa-facebook-official"></i></a><a href="https://twitter.com/utez_morelos" target="_blank"><i class="fa fa-twitter"></i></a><a href="https://www.instagram.com/utezmorelos/" target="_blank"><i class="fa fa-instagram"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--Formulario de registro de citas-->
+        <section class="register-photo">
+            <div class="form-container">
+                <div class="image-holder"></div>
+                <form action="/agendar/cita" method="post">
+                    <a name="cita"></a>
+                    <h2 class="text-center">Agendar cita</h2>
+                    <div class="mb-3"><input type="text" name="nombre" class="form-control" placeholder="Ingresa tu nombre" required /></div>
+                    <div class="mb-3"><input type="text" name="apellido" class="form-control" placeholder="Ingresa tu apellido" required /></div>
+                    <div class="mb-3"><input type="tel" name="telefono" class="form-control" placeholder="Ingresa tu télefono" required /></div>
+                    <div><input class="form-control" name="fecha" type="date" min="2021-08-01" max="2021-12-30" required/></div>
+                    <div style="margin-top: 10px"><input class="form-control" name="hours" type="time" min="09:00" max="20:00" required /></div>
+
+                    <!--Correccion lista-->
+                   <!-- <div><select class="form-select" name="sucursal" required style="background: rgb(247,249,252);margin-top: 7px;border-style: none;">
+                        <optgroup label="--Clínica--">
+                            <option name="sucursal" value="Zapata">DentalCare Emiliano Zapata</option>
+                            <option name="sucursal" value="Cuernavaca">DentalCare Cuernavaca</option>
+                            <option name="sucursal" value="Jiutepec">DentalCare Jiutepec</option>
+                            <option name="sucursal" value="Zacatepec">DentalCare Zacatepec</option>
+                        </optgroup>
+                    </select></div>
+
+                    <div><select name="servicio" class="form-select" required style="background: rgb(247,249,252);margin-top: 7px;border-style: none;">
+                        <optgroup label="--Tratamiento--">
+                            <option name="servicio"value="Diagnostico">Diagnóstico y prevención</option>
+                            <option name="servicio"value="Ortodoncia">Ortodoncía</option>
+                            <option name="servicio"value="Implantes Dentales">Implantes Dentales</option>
+                            <option name="servicio"value="Odontopediatria">Odontopediatría</option>
+                            <option name="servicio"value="Estetica Dental">Estética Dental</option>
+                            <option name="servicio" value="Periodoncia">Periodoncia</option>
+                        </optgroup>
+                    </select></div> -->
+                    
+                    <div><select class="form-select" name="sucursal" required style="background: rgb(247,249,252);margin-top: 7px;border-style: none;">
+                            <optgroup label="--Clínica--">
+                               {% for opcion in opcion %}
+                                    <option value="{{opcion.0}}" >{{opcion.0}}</option>
+                                {% endfor %}
+                            </optgroup>
+                        </select></div>
+                    <div><select class="form-select" name="servicio" required style="background: rgb(247,249,252);margin-top: 7px;border-style: none;">
+                            <optgroup label="--Tratamiento--">
+                                {% for opcion2 in opcion2 %}
+                                    <option value="{{opcion2.0}}" >{{opcion2.0}}</option>
+                                {% endfor %}
+                            </optgroup>
+                        </select></div>
+
+                        <small class="form-text">¿Deseas agregar otro tratamiento?</small>
+                    <div class="form-check"><input type="radio" class="form-check-input" id="check" name="check" value="1" required onchange="javascript:showContent()" /><label class="form-check-label" for="check">Sí</label></div>
+                    <div class="form-check"><input type="radio" class="form-check-input" id="check-2" name="check" value="1" required onchange="javascript:showContent()" /><label class="form-check-label" for="check-2">No</label></div>
+
+
+
+                    <div id="content" style="display: none;"> <select class="form-select" required style="background: rgb(247,249,252);margin-top: 7px;border-style: none;">
+                            <optgroup label="--Tratamiento--">
+                                {% for opcion2 in opcion2 %}
+                                    <option value="{{opcion2.nombre}}" >{{opcion2.0}}</option>
+                                {% endfor %}
+                            </optgroup>
+                        </select>
+
+                        <!--Correccion lista-->
+                       <!-- <div><select name="servicio" class="form-select" required style="background: rgb( 247,249,252);margin-top: 7px;border-style: none;">
+                          <optgroup label="--Tratamiento--">
+                            <option name="servicio"value="Diagnostico y prevencion">Diagnóstico y prevención</option>
+                            <option name="servicio"value="Ortodoncia">Ortodoncía</option>
+                            <option name="servicio"value="Implantes Dentales">Implantes Dentales</option>
+                            <option name="servicio"value="Odontopediatria">Odontopediatría</option>
+                            <option name="servicio"value="Estetica Dental">Estética Dental</option>
+                            <option name="servicio" value="Periodoncia">Periodoncia</option>
+                            </optgroup> 
+                        </select></div>-->
+                        <!---->
+
+                    </div>
+                    <div class="g-recaptcha" data-sitekey="6LfiWLYcAAAAADE3VNqSmC0Dg5ZzrcCkOW5fjMzW" style="margin-top: 10px;"></div>
+                    <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit" style="background: rgb(5,90,218);">Agendar cita</button></div><button class="btn btn-primary d-block w-100" type="button" style="background: rgb(5,90,218);filter: grayscale(73%);" data-target="#exampleModal" data-toggle="modal">Cancelar cita</button>
+                </form>
+            </div>
+        </section>
+
+        <!--Modal para cancelar cita-->
+        <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cancelar cita</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="/cancelar_cita" method="post">
+                      <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Ingresa tu Folio de Cita:</label>
+                        <input type="text" name="folio" class="form-control" id="recipient-name">
+                          <label for="recipient-name" class="col-form-label">Ingresa tu número de télefono:</label>
+                        <input type="text" name="num_tel" class="form-control" id="recipient-tel">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        <button onclick="topFunction()" id="myBtn1" title="Go to top" class="icon ion-ios-arrow-up"></button>
+
+        <!--Pie de página-->
+        <footer class="footer-basic">
+            <div class="social"><a href="https://www.instagram.com/utezmorelos/" target="_blank"><i class="icon ion-social-instagram"></i></a><a href="https://github.com/Paniagua-153" target="_blank"><i class="icon ion-social-github"></i></a><a href="https://twitter.com/utez_morelos" target="_blank"><i class="icon ion-social-twitter"></i></a><a href="https://www.facebook.com/UTEZ.Morelos" target="_blank"><i class="icon ion-social-facebook"></i></a></div>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#inicio">Inicio</a></li>
+                <li class="list-inline-item"><a href="#tratamiento">Tratamientos</a></li>
+                <li class="list-inline-item"><a href="#ubicacion">Ubicación</a></li>
+                <li class="list-inline-item"><a href="#horario">Horarios</a></li>
+                <li class="list-inline-item"><a href="#tratamiento">Testimonios</a></li>
+                <li class="list-inline-item"><a href="#equipo">Nuestro equipo</a></li>
+                <li class="list-inline-item"><a href="#cita">Citas</a></li>
+            </ul>
+            <p class="copyright">DentalCare © 2021</p>
+        </footer>
+    </section>
+    <script src="{{ url_for('static', filename= 'assets/bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{ url_for('static', filename= 'assets/js/bs-init.js')}}"></script>
+    <script type="text/javascript">
+        function showContent() {
+            element = document.getElementById("content");
+            check = document.getElementById("check");
+            check2 = document.getElementById("check-2");
+            if (check.checked) {
+                element.style.display='block';
+            }
+            else {
+                element.style.display='none';
+            }
+        }
+
+        // Cuando el usuario se desplaza hacia abajo 20 px desde la parte superior del documento, muestra el botón
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+          if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("myBtn1").style.display = "block";
+          } else {
+            document.getElementById("myBtn1").style.display = "none";
+          }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+          document.body.scrollTop = 0; // Para safari
+          document.documentElement.scrollTop = 0; // Para Chrome, Firefox, IE y Opera
+        }
+    </script>
+</body>
+
+</html>
+{% endblock %}

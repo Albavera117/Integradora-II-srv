@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon"href="{{ url_for('static', filename= 'dashboard/img/diente.png')}}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>DentalCare</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename= 'assets/img/diente.png')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/fonts/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/fonts/ionicons.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/css/Article-Clean.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/css/Features-Clean.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/css/Footer-Basic.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/css/Highlight-Clean.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/css/Highlight-Phone.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/css/Login-Form-Dark.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/css/Map-Clean.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/css/Navigation-with-Search.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/css/Registration-Form-with-Photo.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/css/styles.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/css/Team-Boxed.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'assets/css/Testimonials.css')}}">
+    <script src="{{ url_for('static', filename= 'assets/bootstrap/js/jquery-3.2.1.slim.min.js')}}"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!--Barra de navegación-->
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-search" style="background: rgb(26, 32, 46);">
+        <div class="container"><a class="navbar-brand" href="/" style="color: rgb(255,255,255);">DentalCare</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1" style="color: rgb(255,255,255);"><span class="visually-hidden" style="color: rgb(255,255,255);">Toggle navigation</span><span class="navbar-toggler-icon" style="color: rgb(255,255,255);"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav" style="color: rgb(255,255,255);">
+                    <li class="nav-item" style="color: rgb(255,255,255);"><a class="nav-link" href="/#tratamiento" style="color: rgb(255,255,255);">Tratamientos</a></li>
+                    <li class="nav-item" style="color: rgb(255,255,255);"><a class="nav-link" href="/#ubicacion" style="color: rgb(255,255,255);">Ubicación</a></li>
+                    <!--li class="nav-item" style="color: rgb(255,255,255);"><a class="nav-link" href="/#horario" style="color: rgb(255,255,255);">Horarios</a></li-->
+                    <li class="nav-item" style="color: rgb(255,255,255);"><a class="nav-link" href="/#testimonio" style="color: rgb(255,255,255);">Testimonios</a></li>
+                    <li class="nav-item" style="color: rgb(255,255,255);"><a class="nav-link" href="/#equipo" style="color: rgb(255,255,255);">Nuestro equipo</a></li>
+                    <li class="nav-item" style="color: rgb(255,255,255);"><a class="nav-link" href="/#cita" style="color: rgb(255,255,255);">Citas</a></li>
+                    <li class="nav-item" style="color: rgb(255,255,255);"><a class="nav-link" href="/login" style="color: rgb(255,255,255); background: rgb(5,90,218); border-radius: 19px;">Iniciar sesión</a></li>
+                    <a name="inicio"></a>
+                   <!--li class="nav-item"><a class="btn btn-light action-button" role="button" data-bss-hover-animate="pulse" href="/login" style="background: rgb(5,90,218);">Iniciar sesión</a></li-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+</body>
+    {% block content %}
+
+    {% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+{% block content %}
+{% with mensaje = get_flashed_messages() %}
+{% if mensaje %}
+{% for mensajes in mensaje %}
+     <center>
+    <div class="alert alert-danger" role="alert">
+        <strong>{{mensajes}}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div></center>
+
+
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+    <!--Formulario de inicio de sesión -->
+    <section class="login-dark">
+        <form action="/login" method="POST">
+            <h2 class="visually-hidden">Login Form</h2>
+            <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
+            <div class="mb-3"><input class="form-control" type="email" name="email" placeholder="Correo electrónico" required=""></div>
+            <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Contraseña" required=""></div>
+            <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">Iniciar sesión</button></div>
+        </form>
+    </section>
+
+    <!--Pie de página -->
+    <footer class="footer-basic">
+        <div class="social"><a href="https://www.instagram.com/utezmorelos/" target="_blank"><i class="icon ion-social-instagram"></i></a><a href="https://github.com/Paniagua-153" target="_blank"><i class="icon ion-social-github"></i></a><a href="https://twitter.com/utez_morelos" target="_blank"><i class="icon ion-social-twitter"></i></a><a href="https://www.facebook.com/UTEZ.Morelos" target="_blank"><i class="icon ion-social-facebook"></i></a></div>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="/#inicio">Inicio</a></li>
+            <li class="list-inline-item"><a href="/#tratamiento">Tratamientos</a></li>
+            <li class="list-inline-item"><a href="/#ubicacion">Ubicación</a></li>
+            <li class="list-inline-item"><a href="/#horario">Horarios</a></li>
+            <li class="list-inline-item"><a href="/#tratamiento">Testimonios</a></li>
+            <li class="list-inline-item"><a href="/#equipo">Nuestro equipo</a></li>
+            <li class="list-inline-item"><a href="/#cita">Citas</a></li>
+        </ul>
+
+        <p class="copyright">DentalCare © 2021</p>
+    </footer>
+    <script src="{{ url_for('static', filename= 'assets/bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{ url_for('static', filename= 'assets/js/bs-init.js')}}"></script>
+
+
+
+{% endblock %}    

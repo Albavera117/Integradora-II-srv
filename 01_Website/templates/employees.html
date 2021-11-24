@@ -1,0 +1,68 @@
+
+ {% extends 'base/base_dashboard_manager.html' %}
+ {% block content %}
+ {% with mensaje = get_flashed_messages() %}
+{% if mensaje %}
+{% for mensajes in mensaje %}
+    <center>
+    <div class="alert alert-danger" role="alert">
+        <strong>{{mensajes}}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div></center>
+
+
+{% endfor %}
+{% endif %}
+{% endwith %}
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-4">Empleados</h3>
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 fw-bold">Información empleados</p>
+                        </div>
+                        <div class="card-body"> <form action="/search" method="POST">
+                            <select class="form-select"   id="formu" name="filtro">
+                                                <optgroup label="--Filtro de busqueda--" >
+                                                <option value="Ninguno" selected >Ninguno </option>
+                                                    <option value="puesto" >Puesto </option>
+                                                <option value="estatus" >Estatus</option>
+
+                                        </select> <h1></h1>
+                            <input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Buscar " name="buscar" method="POST"></form>
+                            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                                <table class="table my-0" id="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Télefono</th>
+                                            <th>Correo</th>
+                                            <th>Puesto</th>
+                                            <th>Sucursal</th>
+                                            <th>Estatus</th>
+                                            <th>Modificar Datos</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for fila in datos  %}
+                                        <tr>
+                                            <td>{{ fila.0 }}</td>
+                                            <td>{{ fila.1 }}</td>
+                                            <td>{{ fila.2 }}</td>
+                                            <td>{{ fila.4 }}</td>
+                                            <td>{{ fila.6 }}</td>
+                                            <td>{{ fila.3 }}</td>
+                                            <td><a class="btn btn-primary" type="button" style="background: rgb(26, 32, 46);" href="/edit_employee/{{fila.5}}">Editar</a></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr></tr>
+                                    </tfoot>
+                                </table>
+                            </div>  <a href="/download/report/pdf"   class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);">Generar Reporte(pdf)  <i class="fas fa-file-pdf fa-sm text-white-50"></i></a> <a href="/download/report/excel"   class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);">Generar Reporte(Excel)  <i class="fas fa-file-excel fa-sm text-white-50"></i></a>
+                        </div>
+
+
+                {% endblock %}              

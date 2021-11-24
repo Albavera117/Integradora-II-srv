@@ -1,0 +1,118 @@
+
+               {% extends 'base/base_dashboard_assistant.html' %}
+               {% block content %}
+               {% with mensaje = get_flashed_messages() %}
+                        {% if mensaje %}
+                        {% for mensajes in mensaje %}
+                            <center>
+                            <div class="alert alert-primary" role="alert">
+                                <strong>{{mensajes}}</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div></center>
+
+
+                        {% endfor %}
+                        {% endif %}
+                        {% endwith %}
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-4">Registro Citas</h3>
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 fw-bold">Ingresa la siguiente información</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="row register-form">
+                                <div class="col-md-8 offset-md-2">
+                                    <form action="/register_appointment" class="custom-form" method="post">
+                                        <h1>&nbsp;DentalCare<i class="fas fa-tooth"></i></h1>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Nombre(s) </label></div>
+                                            <div class="col-sm-6 input-column"><input name="nombre" class="form-control" type="text" placeholder="Ingresa tu nombre(s)" required=""></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Apellidos</label></div>
+                                            <div class="col-sm-6 input-column"><input name="apellido" class="form-control" type="text" placeholder="Ingresa tus apellidos" required=""></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Teléfono</label></div>
+                                            <div class="col-sm-6 input-column"><input name="telefono" class="form-control" type="tel" required="" placeholder="Ingresa tu télefono"></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="email-input-field" >Fecha</label></div>
+                                            <div class="col-sm-6 input-column"><input name="fecha" class="form-control" type="date" min="2021-08-01" max="2021-12-30" required=""></div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="email-input-field" >Hora</label></div>
+                                            <div class="col-sm-6 input-column"><input name="hours" class="form-control" type="time" min="09:00" max="20:00" required></div>
+                                        </div>
+                                       <!-- <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Sucursal</label></div>
+                                            <div class="col-sm-6 input-column"><select class="form-select" name="sucursal" >
+                                                    {% for opcion in opcion %}
+                                                        <option name="sucursal">{{opcion.0}}</option>
+                                                    {% endfor %}
+                                                </select></div>
+                                        </div> -->
+                                       
+                                        
+                                        <div class="row form-group">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Tipo consulta&nbsp;</label></div>
+                                            <div class="col-sm-6 input-column"><select class="form-select" name="servicio">
+                                                    {% for opcion in opcion %}
+                                                        <option  name="servicio">{{opcion.0}}</option>
+                                                    {% endfor %}
+                                                </select></div>
+                                        </div>
+
+                                                
+                                                <div class="row form-group">
+                                                    <p>¿Deseas agregar otro tratamiento?</p>
+
+                                                    <div>
+                                                    <input type="radio"  id="check" name="check" value="1" required onchange="javascript:showContent()">
+                                                    <label for="check">Sí</label>
+                                                    </div>
+
+                                                    <div>
+                                                    <input type="radio" id="check-2" name="check" value="1" required onchange="javascript:showContent()" checked>
+                                                    <label for="check-2">No</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group" id="content2">
+                                                    <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Tipo consulta&nbsp;</label></div>
+                                            <div class="col-sm-6 input-column" ><select class="form-select"  disabled id="formu" name="consulta2">
+                                                   {% for opcion in opcion %}
+                                                        <option name="consulta2" >{{opcion.0}}</option>
+                                                    {% endfor %}
+                                                </select></div>
+                                               
+                                                </div>   
+                                        <button class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);">Registrar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                            <script type="text/javascript">
+                                function showContent() {
+                                    element = document.getElementById("content2");
+                                    check = document.getElementById("check");
+                                    check2 = document.getElementById("check-2");
+                                    formu = document.getElementById("formu");
+                                    
+                                    q= document.getElementById("q");
+                                    if (check.checked) {
+                                        document.getElementById("formu").removeAttribute('disabled');
+                                                                            
+                                        console.log("Hola")}
+                                    if(check2.checked) {
+                                      
+                                        document.getElementById("formu").setAttribute("disabled","");
+                                       
+                                    }
+                        
+                                   
+                                }
+                        </script>
+                {% endblock %}   
