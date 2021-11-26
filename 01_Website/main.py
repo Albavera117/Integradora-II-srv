@@ -16,6 +16,8 @@ import random
 import io
 import xlwt
 import Files
+from flask import Markup
+
 
 
 app = Flask(__name__)
@@ -23,8 +25,8 @@ mysql= MySQL(app)
 
 #Conexion a MySQL
 app.config['MYSQL_HOST'] = 'testdb-1.c9uecaufvfyj.us-east-1.rds.amazonaws.com'
-app.config['MYSQL_USER'] = 'admin'#Userdentalcare'
-app.config['MYSQL_PASSWORD'] = 'H1rb4Bu3n4_123?'#'utez_123?'
+app.config['MYSQL_USER'] = 'Userdentalcare'
+app.config['MYSQL_PASSWORD'] = 'utez_123?'
 app.config['MYSQL_DB'] = 'dentalcare'
 
 #csrf = CsrfProtect(app)
@@ -77,12 +79,33 @@ def agendarcita():
         fecha = request.form['fecha']
         hr = request.form['hours']
         sucursal = request.form['sucursal']
-        servicio = request.form['servicio']
+        servicio1 = request.form['servicio1']
+        try:
+            servicio2 = request.form['servicio2']
+        except:
+            servicio2=str("")
+        ##COMPROBAR DISPONIBILIDAD DE HORARIO
+        fecha2=(fecha+' '+hr)
         cur = mysql.connection.cursor()
-        cur.callproc('registrar_cita',[nombre,apellido,telefono,fecha,hr,sucursal,servicio])
+        cur.callproc('registrar_cita',[nombre,apellido,telefono,fecha,hr,sucursal,servicio1,servicio2])
+        disponibilidad = cur.fetchall()[0][0]
         cur.close()
         mysql.connection.commit()
-        return redirect(url_for('indice'))
+        if bool(disponibilidad):
+            ##RECUPERAR FOLIO
+            cur = mysql.connection.cursor()
+            cur.execute('SELECT MAX(Folio) FROM appointments')
+            folio=cur.fetchall()[0][0]
+            # consulta para pdf
+            cur.execute('SELECT * FROM appointments WHERE Folio=%s', [folio])
+            comprobante = cur.fetchall()
+            session['cita'] = comprobante
+            ##fin consulta pdf
+            flash(Markup('Cita Agendada - FOLIO:{} click <a href="/comprobante_pdf" class="alert-link">aquí</a> para descargar su comprobante'.format(folio)))
+            return redirect(url_for('indice'))
+        else:
+            flash("No Hay Horario Disponible - Trata Con Otro Horario - Lo Sentimos")
+            return redirect(url_for('indice'))
 
 @app.route('/cancelar_cita' ,methods = ['POST'])
 def cancelar_cita():
@@ -90,11 +113,14 @@ def cancelar_cita():
     num_tel = request.form['num_tel']
     
     cur = mysql.connection.cursor()
-    cur.execute('UPDATE dentalcare.citas SET estatus_cita="Cancelada" WHERE folio=%s AND telefono=%s', [folio,num_tel])
-    cur.close()
+    cur.callproc('cancelar_cita',[folio,num_tel])
     mysql.connection.commit()
-    flash("Cita {} cancelada".format(folio))
-
+    # consulta para crear pdf
+    cur.execute('SELECT * FROM appointments WHERE Folio=%s', [folio])
+    comprobante2 = cur.fetchall()
+    session['cita'] = comprobante2
+    # fin consulta pdf
+    flash(Markup('Cita con el folio {} cancelada click <a href="/cancelar_cita_pdf" class="alert-link">aquí</a> para descargar su comprobante'.format(folio)))
     return redirect(url_for('indice'))
 
 @app.route('/login', methods = ['GET','POST'])
@@ -125,9 +151,10 @@ def login ():
                 #Creacion de sesion
                 session['email'] = email
                 session['sucursal'] = sucursalDB
+                session['nombre'] = data[0][2]
+                session['ID'] = data[0][5]
                 flash("Bienvenido {}".format(str(data[0][2])))
                 if data[0][3] == "Doctor":
-                    session['nombre'] = data[0][2]
                     return redirect(url_for('dashboard_doctor'))
                 elif data[0][3] == "Manager":
                     return redirect(url_for('dashboard_manager'))
@@ -148,7 +175,7 @@ def logout():
     #falta definir bien la salida de sesión
     return redirect(url_for('login'))
 
-@app.route('/appointments_assistant')
+@app.route('/appointments_assistant',methods = ['GET','POST'])
 @requires_access_level('Asistente')
 def appointments_assistant ():
     #Query de datos para llenar tabla de registros
@@ -156,7 +183,18 @@ def appointments_assistant ():
     cur.execute('SELECT * FROM appointments WHERE Sucursal=%s ORDER BY Folio',[session['sucursal']])
     datos = cur.fetchall()
 
-    return render_template ('appointments_assistant.html', datos = datos)
+    if request.method == 'POST':
+        folio = request.form['folio']
+        pago = request.form['pago']
+        print(folio)
+        print(pago)
+        cur = mysql.connection.cursor()
+        cur.callproc('pagar',[folio,pago,session['nombre']])
+        cur.close()
+        mysql.connection.commit()
+        return redirect(url_for('appointments_assistant'))
+
+    return render_template ('appointments_assistant.html', datos = datos,sucursal=session['sucursal'])
 
 @app.route('/register_appointment', methods = ['GET', 'POST'])
 @requires_access_level('Asistente')
@@ -164,7 +202,6 @@ def register_appointment ():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM services')
     datos = cur.fetchall()
-
     if request.method == 'POST':
         nombre = request.form['nombre']
         apellido = request.form['apellido']
@@ -172,14 +209,34 @@ def register_appointment ():
         fecha = request.form['fecha']
         hr = request.form['hours']
         sucursal = session['sucursal']
-        servicio = request.form['servicio']
+        servicio1 = request.form['servicio1']
+        try:
+            servicio2 = request.form['servicio2']
+        except:
+            servicio2=str("")
+        ##COMPROBAR DISPONIBILIDAD DE HORARIO
+        fecha2=(fecha+' '+hr)
         cur = mysql.connection.cursor()
-        cur.callproc('registrar_cita',[nombre,apellido,telefono,fecha,hr,sucursal,servicio])
+        cur.callproc('registrar_cita',[nombre,apellido,telefono,fecha,hr,sucursal,servicio1,servicio2])
+        disponibilidad = cur.fetchall()[0][0]
         cur.close()
         mysql.connection.commit()
-        return redirect(url_for('register_appointment'))
+        if bool(disponibilidad):
+            ##RECUPERAR FOLIO
+            cur = mysql.connection.cursor()
+            cur.execute('SELECT MAX(Folio) FROM appointments')
+            folio=cur.fetchall()[0][0]
+            # pdf comprobante
+            cur.execute('SELECT * FROM appointments WHERE Folio=%s', [folio])
+            comprobante = cur.fetchall()
+            session['cita'] = comprobante
+            flash(Markup('Cita Agendada - FOLIO:{} click <a href="/comprobante_pdf" class="alert-link">aquí</a> para descargar su comprobante'.format(folio)))
+            return redirect(url_for('register_appointment'))
+        else:
+            flash("No Hay Horario Disponible - Trata Con Otro Horario - Lo Sentimos")
+            return redirect(url_for('register_appointment'))
 
-    return render_template('register_appointment.html', opcion=datos)
+    return render_template('register_appointment.html', opcion=datos,sucursal=session['sucursal'])
 
 
 @app.route('/employees')
@@ -188,10 +245,11 @@ def employees ():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM employees WHERE Sucursal = %s ORDER BY Sucursal',[session['sucursal']])
     session['x'] = None
+    session['y'] = None
     datos = cur.fetchall()
 
 
-    return render_template ('employees.html', datos = datos)
+    return render_template ('employees.html', datos = datos,sucursal=session['sucursal'])
     #id de empleado dato[6]
 
 
@@ -223,14 +281,14 @@ def register_employees():
             consultorio= request.form['consultorio']
         except:
             consultorio = 0
-        print(consultorio)
         cur = mysql.connection.cursor()
         cur.callproc('registrar_empleado',[puesto,sucursal,nombre,apellido,email,telefono,contraseña,consultorio])
         cur.close()
         mysql.connection.commit()
+        flash("Registro exitoso")
         return redirect(url_for('register_employees'))
 
-    return render_template ('register_employees.html',opcion=datos,opcion2=datos2,opcion3=datos3)
+    return render_template ('register_employees.html',opcion=datos,opcion2=datos2,opcion3=datos3, sucursal=session['sucursal'])
     
 
 @app.route('/appointments_manager')
@@ -239,9 +297,10 @@ def appointments_manager ():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM appointments WHERE Sucursal= %s ORDER BY Folio',[session['sucursal']])
     session['x'] = None
+    session['y'] = None
     datos = cur.fetchall()
 
-    return render_template ('appointments_manager.html', datos = datos)
+    return render_template ('appointments_manager.html', datos = datos,sucursal=session['sucursal'])
 
 @app.route('/appointments_doctor')
 @requires_access_level('Doctor')
@@ -251,7 +310,7 @@ def appointments_doctor ():
     datos = cur.fetchall()
     
 
-    return render_template ('appointments_doctor.html', datos = datos)
+    return render_template ('appointments_doctor.html', datos = datos,doctor=session['nombre'])
 
 @app.route('/dashboard_doctor')
 @requires_access_level('Doctor')
@@ -276,15 +335,10 @@ def search():
         session['x'] = busqueda
         session['y'] = filtro
         cur = mysql.connection.cursor()
-        if filtro == 'puesto':
-            cur.execute('SELECT * FROM employees WHERE Cargo=%s AND Sucursal=%s',[busqueda, session['sucursal']])
-            datos = cur.fetchall()
-        elif filtro == 'estatus':
-            cur.execute('SELECT * FROM employees WHERE Estatus=%s AND Sucursal=%s', [busqueda, session['sucursal']])
-            datos = cur.fetchall()
-        else:
-            cur.execute('SELECT * FROM employees WHERE Sucursal=%s', [session['sucursal']])
-            datos = cur.fetchall()
+        cur.callproc('busqueda_empleado',[busqueda,filtro,session['sucursal']])
+        datos = cur.fetchall()
+        cur.close()
+        mysql.connection.commit()
 
 
     return render_template ('employees.html', datos = datos)
@@ -298,18 +352,35 @@ def search_appointments_manager():
         session['x'] = busqueda
         session['y'] = filtro
         cur = mysql.connection.cursor()
-        if filtro=="consultorio":
-            cur.execute('SELECT * FROM appointments WHERE Consultorio=%s AND Sucursal=%s',[busqueda,  session['sucursal']])
-            datos = cur.fetchall()
-            print(busqueda)
-            print(filtro)
-        elif filtro == "nombre":
-            cur.execute('SELECT * FROM appointments WHERE Doctor=%s AND Sucursal=%s', [busqueda,  session['sucursal']])
-            datos = cur.fetchall()
-        else:
-            cur.execute('SELECT * FROM appointments WHERE Sucursal=%s' , [session['sucursal']])
-            datos = cur.fetchall()
+        cur.callproc('busqueda_cita',[busqueda,filtro,session['sucursal']])
+        datos = cur.fetchall()
+        cur.close()
+        mysql.connection.commit()
         return render_template('appointments_manager.html', datos=datos)
+
+@app.route('/busqueda_fechas_assistant', methods=['POST', 'GET'])
+def busqueda_fechas_assistant():
+    if request.method == 'POST':
+        fecha1=request.form.get('fecha',False)
+        fecha2 = request.form.get('fecha2', False)
+        cur = mysql.connection.cursor()
+        cur.callproc('busqueda_fechas_asistente',[fecha1,fecha2,session['sucursal']])
+        datos = cur.fetchall()
+        cur.close()
+        mysql.connection.commit()
+        return render_template('appointments_assistant.html',datos = datos,sucursal=session['sucursal'])
+
+@app.route('/busqueda_fechas_doctor', methods=['POST', 'GET'])
+def busqueda_fechas_doctor():
+    if request.method == 'POST':
+        fecha1=request.form.get('fecha',False)
+        fecha2 = request.form.get('fecha2', False)
+        cur = mysql.connection.cursor()
+        cur.callproc('busqueda_fechas_doctor',[fecha1,fecha2,session['ID'],session['sucursal']])
+        datos = cur.fetchall()
+        cur.close()
+        mysql.connection.commit()
+        return render_template('appointments_doctor.html',datos = datos,doctor=session['nombre'])
 
 #Generar PDF
 @app.route('/download/report/pdf')
@@ -332,7 +403,19 @@ def dowload_report_excel_appointments_manager():
    xls= Files.download_report_excel_manager()
    return xls
 
-@app.route('/edit_employee/<id>')
+#pdf comprobante de cita
+@app.route('/comprobante_pdf')
+def comprobante_pdf():
+    pdf=Files.comprobante_pdf()
+    return pdf
+
+#pdf comprobante cita cancelada
+@app.route('/cancelar_cita_pdf')
+def cancelar_cita_pdf():
+    pdf=Files.cancelar_cita_pdf()
+    return pdf
+
+@app.route('/edit_employee/<id>',methods =['POST', 'GET'])
 def obtener_id(id):
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM employees WHERE Sucursal = %s AND ID=%s ', [session['sucursal'], id])
@@ -342,14 +425,40 @@ def obtener_id(id):
     datos = cur.fetchall()
     cur.execute('SELECT * FROM subsidiary')
     datos2 = cur.fetchall()
-    cur.execute(
-        'SELECT `Numero`,`Nombre Sucursal` FROM doctors_office WHERE `Nombre Sucursal` = %s GROUP BY `Nombre Sucursal`,`Numero` ORDER BY `Numero`',
-        [session['sucursal']])
+    cur.execute('SELECT `Numero`,`Nombre Sucursal` FROM doctors_office WHERE `Nombre Sucursal` = %s GROUP BY `Nombre Sucursal`,`Numero` ORDER BY `Numero`',[session['sucursal']])
     datos3 = cur.fetchall()
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        email = request.form['email']
+        telefono = request.form['phone']
+        cur.execute('SELECT Cargo FROM employees WHERE ID=%s',[id])
+        puesto = cur.fetchall()[0][0]
+        estatus = request.form['estatus']
+        try:
+            contraseña = request.form['password']
+        except:
+            contraseña = str("")        
+        cur = mysql.connection.cursor()
+        cur.callproc('editar_personal',[puesto,estatus,nombre,apellido,email,telefono,contraseña,id])
+        cur.close()
+        mysql.connection.commit()
+        return redirect(url_for('employees'))
 
-    return render_template('edit_employee.html', dato = dato[0], opcion=datos,opcion2=datos2,opcion3=datos3)
+    return render_template('edit_employee.html', dato = dato[0], opcion=datos,opcion2=datos2,opcion3=datos3,id=id)
 
+@app.route("/ajaxfile",methods=["POST","GET"])
+def ajaxfile():
+    cur = mysql.connection.cursor()
+    if request.method == 'POST':
+        userid = request.form['citaid']
 
+        cur.execute("SELECT * FROM appointments WHERE Folio = %s", [userid])
+        citas = cur.fetchall() 
+
+        cur.execute("SELECT * FROM relationship_appointments WHERE Folio = %s",[userid])
+        servicios = cur.fetchall()
+    return render_template('modal.html',citas=citas,servicios=servicios)
 
 if __name__ == '__main__':
 	app.run(debug = True, port = 8000, host = '0.0.0.0')

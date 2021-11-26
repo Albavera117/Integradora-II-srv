@@ -211,7 +211,7 @@
                                 {% endfor %}
                             </optgroup>
                         </select></div>
-                    <div><select class="form-select" name="servicio" required style="background: rgb(247,249,252);margin-top: 7px;border-style: none;">
+                    <div><select class="form-select" name="servicio1" required style="background: rgb(247,249,252);margin-top: 7px;border-style: none;">
                             <optgroup label="--Tratamiento--">
                                 {% for opcion2 in opcion2 %}
                                     <option value="{{opcion2.0}}" >{{opcion2.0}}</option>
@@ -225,10 +225,10 @@
 
 
 
-                    <div id="content" style="display: none;"> <select class="form-select" required style="background: rgb(247,249,252);margin-top: 7px;border-style: none;">
+                    <div id="content" style="display: none;"> <select class="form-select"  name="servicio2" required style="background: rgb(247,249,252);margin-top: 7px;border-style: none;">
                             <optgroup label="--Tratamiento--">
                                 {% for opcion2 in opcion2 %}
-                                    <option value="{{opcion2.nombre}}" >{{opcion2.0}}</option>
+                                    <option value="{{opcion2.0}}" >{{opcion2.0}}</option>
                                 {% endfor %}
                             </optgroup>
                         </select>

@@ -18,36 +18,43 @@
                 {% endwith %}
                <div class="container-fluid">
                     <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-dark mb-0">Citas</h3>
+                        <h3 class="text-dark mb-0">Citas Doctor - {{doctor}}</h3>
                     </div>
                     <div class="card shadow">
                         <div class="card-header py-3">
                             <p class="text-primary m-0 fw-bold">Información de citas</p>
                         </div>
                         <div class="card-body">
-                            <div class="float-start float-md-end mt-5 mt-md-0 search-area"></div><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Buscar">
-                            <div class="row">
-                                <div class="col-md-6 text-nowrap">
-                                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"></div>
-                                </div>
+                            <div class="float-start float-md-end mt-5 mt-md-0 search-area"></div><div class="row form-group">
+
+                            <p class="fw-bold">Buscar por:</p>
+
+                            <div>
+                                <form action="/busqueda_fechas_doctor" class="custom-form" method="post">
+                                <input type="radio"  id="check" name="check" required onchange="javascript:showContent()">
+                                <label for="check" >Periodo de tiempo </label>   <input type="radio" id="check-2" name="check" required onchange="javascript:showContent()" checked>
+                                <label for="check-2">Fecha especifica</label> <input name="fecha" class="form-control" type="date" min="2021-08-01" max="2021-12-30" required="">
+                                <input name="fecha2" class="form-control" type="date" min="2021-08-01" max="2021-12-30" required="" disabled id="formu"><h1></h1>
+                                <button class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);">Buscar  <i class="fas fa-search fa-sm text-white-50"></i></button>
+                                </form>
                             </div>
+                    </div>
+
+
                             <div class="table-responsive table mt-2" id="dataTable-1" role="grid" aria-describedby="dataTable_info">
                                 <table class="table my-0" id="dataTable">
                                     <thead>
                                         <tr>
+                                                                                    <tr>
                                             <th>Folio</th>
                                             <th>Nombre Paciente</th>
                                             <th>Teléfono</th>
-                                            <th>Clinica</th>
                                             <th>Consultorio</th>
                                             <th>Doctor</th>
                                             <th>Fecha y Hora</th>
-                                            <th>Turno</th>
-                                            <th>Servicios</th>
                                             <th>Tiempo en Consulta</th>
-                                            <th>Total Pagado</th>
                                             <th>Estatus</th>
-                                            <th>Modificar Datos</th>
+                                            <th>Detalles</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -56,16 +63,14 @@
                                             <td>{{ fila.0 }}</td>
                                             <td>{{ fila.2 }}</td>
                                             <td>{{ fila.4 }}</td>
-                                            <td>{{ fila.11 }}</td>
                                             <td style="text-align: center;">{{ fila.7 }}</td>
                                             <td>{{ fila.1 }}</td>
                                             <td>{{ fila.5 }}</td>
-                                            <td>{{ fila.3 }}</td>
-                                            <td>{{ fila.12 }}</td>
                                             <td style="text-align: center;">{{ fila.8 }} min</td>
-                                            <td>{{ fila.9 }}</td>
                                             <td>{{ fila.10 }}</td>
-                                            <td><button class="btn btn-primary" type="button" style="background: rgb(26, 32, 46);">Editar</button></td>
+                                            <td><button data-id='{{fila.0}}' class="appointmentinfo btn btn-primary" type="button" style="background: rgb(26, 32, 46);">
+                                            Detalles
+                                            </button></td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -77,5 +82,80 @@
                         </div>
                     </div>
                 </div>
+
+
+           <script type='text/javascript'>
+            $(document).ready(function(){
+                $('.appointmentinfo').click(function(){
+                    var citaid = $(this).data('id');
+                    $.ajax({
+                        url: '/ajaxfile',
+                        type: 'post',
+                        data: {citaid: citaid},
+                        success: function(data){ 
+                            $('.modal-body1').html(data); 
+                            $('.modal-body1').append(data.htmlresponse);
+                            $('#empModal').modal('show');
+                        }
+                    });
+                });
+            });
+
+
+function cerrar(){
+  $("#empModal").modal('hide');//ocultamos el modal
+  $(".modal-body").drop('hide');//ocultamos el modal
+
+
+}
+
+
+            </script>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="empModal" tabindex="-1" role="dialog" tabindex="-1" role="dialog"  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalles de la Cita</h5>
+        <button onClick="cerrar()" type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body1">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button onClick="cerrar()" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+                   <script type="text/javascript">
+                                function showContent() {
+                                    element = document.getElementById("content2");
+                                    check = document.getElementById("check");
+                                    check2 = document.getElementById("check-2");
+                                    formu = document.getElementById("formu");
+
+                                    q= document.getElementById("q");
+                                    if (check.checked) {
+                                        document.getElementById("formu").removeAttribute('disabled');
+
+                                        console.log("Hola")}
+                                    if(check2.checked) {
+
+                                        document.getElementById("formu").setAttribute("disabled","");
+
+                                    }
+
+
+                                }
+                        </script>
            
             {% endblock %}           

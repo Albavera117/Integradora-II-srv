@@ -17,7 +17,7 @@
 {% endif %}
 {% endwith %}
                 <div class="container-fluid">
-                    <h3 class="text-dark mb-4">Empleados</h3>
+                    <h3 class="text-dark mb-4">Empleados {{sucursal}}</h3>
                     <div class="card shadow">
                         <div class="card-header py-3">
                             <p class="text-primary m-0 fw-bold">Información empleados</p>
@@ -39,7 +39,6 @@
                                             <th>Télefono</th>
                                             <th>Correo</th>
                                             <th>Puesto</th>
-                                            <th>Sucursal</th>
                                             <th>Estatus</th>
                                             <th>Modificar Datos</th>
                                         </tr>
@@ -51,7 +50,6 @@
                                             <td>{{ fila.1 }}</td>
                                             <td>{{ fila.2 }}</td>
                                             <td>{{ fila.4 }}</td>
-                                            <td>{{ fila.6 }}</td>
                                             <td>{{ fila.3 }}</td>
                                             <td><a class="btn btn-primary" type="button" style="background: rgb(26, 32, 46);" href="/edit_employee/{{fila.5}}">Editar</a></td>
                                         </tr>

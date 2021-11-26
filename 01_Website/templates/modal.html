@@ -1,0 +1,31 @@
+{% for row in citas %} 
+<table border='0' width='100%'>
+    <tr>
+        <td style="padding:20px;">
+        <p><strong>Nombre</strong> : {{row.2}}</p>
+        <p><strong>Turno</strong>: {{row.3}}</p>
+        <p><strong>Monto a Pagar</strong>: ${{row.9}}</p>
+        <p><strong>Monto Pagado</strong>: ${{row.12}}</p>
+        {% if row.12 == 0 %}
+        <p><strong>Estado de Cuenta</strong>: NO PAGADO</p>
+        {% endif %}
+
+        {% if row.12 > 0 and row.12 < row.9 %}
+        <p><strong>Total Faltante</strong>: {{row.9-row.12}}</p>
+        <p><strong>Estado de Cuenta</strong>: PAGADO PARCIALMENTE</p>
+        {% endif %}
+
+        {% if row.12 == row.9 %}
+        <p><strong>Estado de Cuenta</strong>: PAGADO </p>
+        {% endif %}
+
+        <p><strong>Servicio | Costo</strong>:</p>
+{% endfor %}
+
+{% for service in servicios %} 
+        <p>{{service.0}} | ${{service.1}}</p>
+{% endfor %}
+
+        </td>
+    </tr>
+</table>

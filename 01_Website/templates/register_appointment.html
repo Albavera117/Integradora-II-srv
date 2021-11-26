@@ -17,7 +17,7 @@
                         {% endif %}
                         {% endwith %}
                 <div class="container-fluid">
-                    <h3 class="text-dark mb-4">Registro Citas</h3>
+                    <h3 class="text-dark mb-4">Registro Citas {{sucursal}}</h3>
                     <div class="card shadow">
                         <div class="card-header py-3">
                             <p class="text-primary m-0 fw-bold">Ingresa la siguiente información</p>
@@ -59,9 +59,9 @@
                                         
                                         <div class="row form-group">
                                             <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Tipo consulta&nbsp;</label></div>
-                                            <div class="col-sm-6 input-column"><select class="form-select" name="servicio">
+                                            <div class="col-sm-6 input-column"><select class="form-select" name="servicio1">
                                                     {% for opcion in opcion %}
-                                                        <option  name="servicio">{{opcion.0}}</option>
+                                                        <option  name="servicio1">{{opcion.0}}</option>
                                                     {% endfor %}
                                                 </select></div>
                                         </div>
@@ -82,9 +82,9 @@
                                                 </div>
                                                 <div class="row form-group" id="content2">
                                                     <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Tipo consulta&nbsp;</label></div>
-                                            <div class="col-sm-6 input-column" ><select class="form-select"  disabled id="formu" name="consulta2">
+                                            <div class="col-sm-6 input-column" ><select class="form-select"  disabled id="formu" name="servicio2">
                                                    {% for opcion in opcion %}
-                                                        <option name="consulta2" >{{opcion.0}}</option>
+                                                        <option name="servicio2" >{{opcion.0}}</option>
                                                     {% endfor %}
                                                 </select></div>
                                                
