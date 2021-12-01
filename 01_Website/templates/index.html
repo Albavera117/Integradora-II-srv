@@ -180,9 +180,8 @@
                     <div class="mb-3"><input type="text" name="nombre" class="form-control" placeholder="Ingresa tu nombre" required /></div>
                     <div class="mb-3"><input type="text" name="apellido" class="form-control" placeholder="Ingresa tu apellido" required /></div>
                     <div class="mb-3"><input type="tel" name="telefono" class="form-control" placeholder="Ingresa tu télefono" required /></div>
-                    <div><input class="form-control" name="fecha" type="date" min="2021-08-01" max="2021-12-30" required/></div>
+                    <div><input class="form-control" name="fecha" type="date" min="2021-08-01" max="2022-12-30" required/></div>
                     <div style="margin-top: 10px"><input class="form-control" name="hours" type="time" min="09:00" max="20:00" required /></div>
-
                     <!--Correccion lista-->
                    <!-- <div><select class="form-select" name="sucursal" required style="background: rgb(247,249,252);margin-top: 7px;border-style: none;">
                         <optgroup label="--Clínica--">
@@ -203,7 +202,7 @@
                             <option name="servicio" value="Periodoncia">Periodoncia</option>
                         </optgroup>
                     </select></div> -->
-                    
+
                     <div><select class="form-select" name="sucursal" required style="background: rgb(247,249,252);margin-top: 7px;border-style: none;">
                             <optgroup label="--Clínica--">
                                {% for opcion in opcion %}
@@ -242,7 +241,7 @@
                             <option name="servicio"value="Odontopediatria">Odontopediatría</option>
                             <option name="servicio"value="Estetica Dental">Estética Dental</option>
                             <option name="servicio" value="Periodoncia">Periodoncia</option>
-                            </optgroup> 
+                            </optgroup>
                         </select></div>-->
                         <!---->
 
@@ -268,7 +267,7 @@
                       <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Ingresa tu Folio de Cita:</label>
                         <input type="text" name="folio" class="form-control" id="recipient-name">
-                          <label for="recipient-name" class="col-form-label">Ingresa tu número de télefono:</label>
+                          <label for="recipient-name" class="col-form-label">Ingresa tu número de teléfono:</label>
                         <input type="text" name="num_tel" class="form-control" id="recipient-tel">
                       </div>
                       <div class="modal-footer">
@@ -329,7 +328,7 @@
           document.body.scrollTop = 0; // Para safari
           document.documentElement.scrollTop = 0; // Para Chrome, Firefox, IE y Opera
         }
-    </script>
+            </script>
 </body>
 
 </html>

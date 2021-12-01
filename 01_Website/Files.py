@@ -919,4 +919,250 @@ def cancelar_cita_pdf():
                    headers={'Content-Disposition': 'attachment;filename=Comprobante_Cita.pdf'})
     return pdf
 
+def citas_doctor():
+    fecha1 = session['fecha1']
+    fecha2 = session['fecha2']
+    nombre=session['nombre']
+
+    suma_dinero = 0
+    suma_tiempo = 0
+
+    class PDF(FPDF):
+
+        def header(self):
+            # Logo
+            self.image('static/dashboard/img/2.png', x=10, y=10, w=20, h=20)
+            self.set_font('Arial', 'B', 25)
+            # Title
+            self.cell(w=0, h=20, txt='Reporte Empleados ' + str(today), border=0, ln=1,
+                      align='C', fill=0)
+            # Line break
+            self.ln(5)
+        # Page footer
+        def footer(self):
+            # Position at 1.5 cm from bottom
+            self.set_y(-20)
+            self.set_x(10)
+            # Arial italic 8
+            self.set_font('Arial', 'I', 12)
+
+            # Page number
+            self.cell(w=0, h=10, txt='Página ' + str(self.page_no()) + '/{nb}', border=0,
+                      align='C', fill=0)
+            # Instantiation of inherited class
+
+    if fecha1 ==None and fecha2==None:
+
+        today = date.today().strftime('%d-%m-%Y')
+
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT * FROM appointments WHERE Sucursal = %s AND Doctor = %s ORDER BY Folio', [session['sucursal'], session['nombre']])
+        result = cur.fetchall()
+
+        pdf = PDF('L', 'mm', (300, 450))
+        pdf.alias_nb_pages()
+        pdf.add_page()
+        pdf.set_left_margin(7)
+
+        col_width = 15
+        col_width2 = 55
+        col_width3 = 28
+        col_width4 = 70
+
+        pdf.ln(1)
+        pdf.set_font('Arial', 'B', 10)
+        pdf.set_draw_color(r=34, g=57, b=110)
+        th = 5
+
+        pdf.cell(col_width, h=5, txt='Folio', border=1, fill=0, align='C')
+        pdf.cell(col_width2, h=5, txt='Nombre Paciente', border=1, fill=0, align='C')
+        pdf.cell(col_width3, h=5, txt='Teléfono', border=1, fill=0, align='C')
+        pdf.cell(col_width3, h=5, txt='Consultorio', border=1, fill=0, align='C')
+        pdf.cell(col_width2, h=5, txt='Doctor', border=1, fill=0, align='C')
+        pdf.cell(col_width2, h=5, txt='Fecha y hora', border=1, fill=0, align='C')
+        pdf.cell(col_width2, h=5, txt='Tiempo en consulta', border=1, fill=0, align='C')
+        pdf.cell(col_width2, h=5, txt='Total pagado', border=1, fill=0, align='C')
+        pdf.multi_cell(col_width2, h=5, txt='Estatus', border=1, fill=0, align='C')
+        suma_dinero = 0
+        suma_tiempo = 0
+        for row in result:
+            pdf.set_font('Arial', '', 10)
+            pdf.cell(col_width, th, str(row[0]), border=1, fill=0, align='C')
+            pdf.cell(col_width2, th, str(row[2]), border=1, fill=0)
+            pdf.cell(col_width3, th, str(row[4]), border=1, fill=0)
+            pdf.cell(col_width3, th, str(row[7]), border=1, fill=0, align='C')
+            pdf.cell(col_width2, th, str(row[1]), border=1, fill=0)
+            pdf.cell(col_width2, th, str(row[5]), border=1, fill=0, align='C')
+            pdf.cell(col_width2, th, str(row[8]) + " minutos", border=1, fill=0, align='C')
+            pdf.cell(col_width2, th, str(row[12]) + " pesos", border=1, fill=0, align='C')
+            pdf.cell(col_width2, th, str(row[10]), border=1, fill=0, align='C')
+
+            suma_dinero = suma_dinero + float(row[12])
+            suma_tiempo = suma_tiempo + float(row[8])
+
+            pdf.ln(th)
+        suma_tiempo = suma_tiempo / 60
+        pdf.multi_cell(col_width, h=5, txt="", border=0, fill=0, align='C')
+        pdf.multi_cell(col_width4, h=5, txt="Promedio tiempo activo: " + str(suma_tiempo) + " horas", border=0, fill=0)
+        pdf.multi_cell(col_width4, h=5, txt="Ingresos generados: " + "$" + str(suma_dinero) + " pesos", border=0,
+                       fill=0)
+
+    else:
+
+        print("Else")
+        today = date.today().strftime('%d-%m-%Y')
+
+        cur = mysql.connection.cursor()
+        cur.callproc('busqueda_fechas_doctor', [fecha1, fecha2, session['ID'], session['sucursal']])
+        result = cur.fetchall()
+
+        pdf = PDF('L', 'mm', (300, 450))
+        pdf.alias_nb_pages()
+        pdf.add_page()
+        pdf.set_left_margin(7)
+
+        col_width = 15
+        col_width2 = 55
+        col_width3 = 25
+        col_width4 = 70
+
+        pdf.ln(1)
+        pdf.set_font('Arial', 'B', 10)
+        pdf.set_draw_color(r=34, g=57, b=110)
+        th = 5
+
+        pdf.cell(col_width, h=5, txt='Folio', border=1, fill=0, align='C')
+        pdf.cell(col_width2, h=5, txt='Nombre Paciente', border=1, fill=0, align='C')
+        pdf.cell(col_width3, h=5, txt='Teléfono', border=1, fill=0, align='C')
+        pdf.cell(col_width3, h=5, txt='Consultorio', border=1, fill=0, align='C')
+        pdf.cell(col_width2, h=5, txt='Doctor', border=1, fill=0, align='C')
+        pdf.cell(col_width2, h=5, txt='Fecha y hora', border=1, fill=0, align='C')
+        pdf.cell(col_width2, h=5, txt='Tiempo en consulta', border=1, fill=0, align='C')
+        pdf.cell(col_width2, h=5, txt='Total pagado', border=1, fill=0, align='C')
+        pdf.multi_cell(col_width2, h=5, txt='Estatus', border=1, fill=0, align='C')
+        for row in result:
+            pdf.set_font('Arial', '', 10)
+            pdf.cell(col_width, th, str(row[0]), border=1, fill=0, align='C')
+            pdf.cell(col_width2, th, str(row[2]), border=1, fill=0)
+            pdf.cell(col_width3, th, str(row[4]), border=1, fill=0)
+            pdf.cell(col_width3, th, str(row[7]), border=1, fill=0, align='C')
+            pdf.cell(col_width2, th, str(row[1]), border=1, fill=0)
+            pdf.cell(col_width2, th, str(row[5]), border=1, fill=0, align='C')
+            pdf.cell(col_width2, th, str(row[8]) + " minutos", border=1, fill=0, align='C')
+            pdf.cell(col_width2, th, str(row[12]) + " pesos", border=1, fill=0, align='C')
+            pdf.cell(col_width2, th, str(row[10]), border=1, fill=0, align='C')
+
+            suma_dinero = suma_dinero + float(row[12])
+            suma_tiempo = suma_tiempo + float(row[8])
+            pdf.ln(th)
+
+        suma_tiempo = suma_tiempo / 60
+        pdf.multi_cell(col_width, h=5, txt="", border=0, fill=0, align='C')
+        pdf.multi_cell(col_width4, h=5, txt="Promedio tiempo activo: " + str(suma_tiempo) + " horas", border=0, fill=0)
+        pdf.multi_cell(col_width4, h=5, txt="Ingresos generados: " + "$" + str(suma_dinero) + " pesos", border=0,
+                       fill=0)
+    pdf = Response(pdf.output(dest='S').encode('latin-1'), mimetype='application/pdf',
+                   headers={'Content-Disposition': 'attachment;filename=Employee_Report.pdf'})
+    return pdf
+
+def citas_doctor_excel():
+    fecha1 = session['fecha1']
+    fecha2 = session['fecha2']
+    nombre = session['nombre']
+    suma_dinero = 0
+    suma_tiempo = 0
+
+    if fecha1 ==None and fecha2==None:
+        today = date.today().strftime('%d-%m-%Y')
+
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT * FROM appointments WHERE Sucursal = %s AND Doctor = %s ORDER BY Folio', [session['sucursal'], session['nombre']])
+        result = cur.fetchall()
+        # output in bytes
+        output = io.BytesIO()
+        # create WorkBook object
+        workbook = xlwt.Workbook()
+        # add a sheet
+        sh = workbook.add_sheet('Appointments Report')
+
+        # add headers
+        sh.write(0, 0, 'Folio')
+        sh.write(0, 1, 'Nombre Paciente')
+        sh.write(0, 2, 'Télefono')
+        sh.write(0, 3, 'Consultorio')
+        sh.write(0, 4, 'Doctor')
+        sh.write(0, 5, 'Fecha y hora')
+        sh.write(0, 6, 'Tiempo en consulta')
+        sh.write(0, 7, 'Total pagado')
+        sh.write(0, 8, 'Estatus')
+
+        idx = 0
+        for row in result:
+            sh.write(idx + 1, 0, row[0])
+            sh.write(idx + 1, 1, row[2])
+            sh.write(idx + 1, 2, row[4])
+            sh.write(idx + 1, 3, row[7])
+            sh.write(idx + 1, 4, row[1])
+            sh.write(idx + 1, 5, row[5])
+            sh.write(idx + 1, 6, str(row[8]) + " minutos")
+            sh.write(idx + 1, 7, str(row[12]) + " pesos")
+            sh.write(idx + 1, 8, row[10])
+            idx += 1
+
+            suma_dinero = suma_dinero + float(row[12])
+            suma_tiempo = suma_tiempo + float(row[8])
+        suma_tiempo = suma_tiempo / 60
+        sh.write(idx + 1, 0, 'Promedio tiempo activo: ' + str(suma_tiempo) + " horas")
+        sh.write(idx + 2, 0, 'Ingresos generados: ' + str(suma_dinero) + " pesos")
+        workbook.save(output)
+        output.seek(0)
+
+    else:
+        today = date.today().strftime('%d-%m-%Y')
+
+        cur = mysql.connection.cursor()
+        cur.callproc('busqueda_fechas_doctor', [fecha1, fecha2, session['ID'], session['sucursal']])
+        result = cur.fetchall()
+        # output in bytes
+        output = io.BytesIO()
+        # create WorkBook object
+        workbook = xlwt.Workbook()
+        # add a sheet
+        sh = workbook.add_sheet('Appointments Report')
+
+        # add headers
+        sh.write(0, 0, 'Folio')
+        sh.write(0, 1, 'Nombre Paciente')
+        sh.write(0, 2, 'Télefono')
+        sh.write(0, 3, 'Consultorio')
+        sh.write(0, 4, 'Doctor')
+        sh.write(0, 5, 'Fecha y hora')
+        sh.write(0, 6, 'Tiempo en consulta')
+        sh.write(0, 7, 'Total pagado')
+        sh.write(0, 8, 'Estatus')
+
+        idx = 0
+        for row in result:
+            sh.write(idx + 1, 0, row[0])
+            sh.write(idx + 1, 1, row[2])
+            sh.write(idx + 1, 2, row[4])
+            sh.write(idx + 1, 3, row[7])
+            sh.write(idx + 1, 4, row[1])
+            sh.write(idx + 1, 5, row[5])
+            sh.write(idx + 1, 6, str(row[8]) + " minutos")
+            sh.write(idx + 1, 7, str(row[12]) + " pesos")
+            sh.write(idx + 1, 8, row[10])
+            idx += 1
+            suma_dinero = suma_dinero + float(row[12])
+            suma_tiempo = suma_tiempo + float(row[8])
+        suma_tiempo = suma_tiempo / 60
+        sh.write(idx + 1, 0, 'Promedio tiempo activo: ' + str(suma_tiempo) + " horas")
+        sh.write(idx + 2, 0, 'Ingresos generados: ' + str(suma_dinero) + " pesos")
+        workbook.save(output)
+        output.seek(0)
+
+    xls = Response(output, mimetype="application/ms-excel",
+                   headers={"Content-Disposition": "attachment;filename=Appointments_report " + today + ".xls"})
+    return xls
+
 

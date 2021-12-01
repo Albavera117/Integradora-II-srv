@@ -194,7 +194,7 @@ def appointments_assistant ():
         mysql.connection.commit()
         return redirect(url_for('appointments_assistant'))
 
-    return render_template ('appointments_assistant.html', datos = datos,sucursal=session['sucursal'])
+    return render_template ('appointments_assistant.html', datos = datos,sucursal=session['sucursal'],asistente=session['nombre'])
 
 @app.route('/register_appointment', methods = ['GET', 'POST'])
 @requires_access_level('Asistente')
@@ -236,7 +236,7 @@ def register_appointment ():
             flash("No Hay Horario Disponible - Trata Con Otro Horario - Lo Sentimos")
             return redirect(url_for('register_appointment'))
 
-    return render_template('register_appointment.html', opcion=datos,sucursal=session['sucursal'])
+    return render_template('register_appointment.html', opcion=datos,sucursal=session['sucursal'],asistente=session['nombre'])
 
 
 @app.route('/employees')
@@ -249,7 +249,7 @@ def employees ():
     datos = cur.fetchall()
 
 
-    return render_template ('employees.html', datos = datos,sucursal=session['sucursal'])
+    return render_template ('employees.html', datos = datos,sucursal=session['sucursal'],manager=session['nombre'])
     #id de empleado dato[6]
 
 
@@ -288,7 +288,7 @@ def register_employees():
         flash("Registro exitoso")
         return redirect(url_for('register_employees'))
 
-    return render_template ('register_employees.html',opcion=datos,opcion2=datos2,opcion3=datos3, sucursal=session['sucursal'])
+    return render_template ('register_employees.html',opcion=datos,opcion2=datos2,opcion3=datos3, sucursal=session['sucursal'],manager=session['nombre'])
     
 
 @app.route('/appointments_manager')
@@ -300,7 +300,7 @@ def appointments_manager ():
     session['y'] = None
     datos = cur.fetchall()
 
-    return render_template ('appointments_manager.html', datos = datos,sucursal=session['sucursal'])
+    return render_template ('appointments_manager.html', datos = datos,sucursal=session['sucursal'],manager=session['nombre'])
 
 @app.route('/appointments_doctor')
 @requires_access_level('Doctor')
@@ -308,6 +308,8 @@ def appointments_doctor ():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM appointments WHERE Sucursal = %s AND Doctor = %s ORDER BY Folio',[session['sucursal'],session['nombre']])
     datos = cur.fetchall()
+    session['fecha1'] = None
+    session['fecha2'] = None
     
 
     return render_template ('appointments_doctor.html', datos = datos,doctor=session['nombre'])
@@ -315,17 +317,17 @@ def appointments_doctor ():
 @app.route('/dashboard_doctor')
 @requires_access_level('Doctor')
 def dashboard_doctor ():
-    return render_template ('dashboard_doctor.html')
+    return render_template ('dashboard_doctor.html',doctor=session['nombre'])
 
 @app.route('/dashboard_manager')
 @requires_access_level('Manager')
 def dashboard_manager ():
-    return render_template ('dashboard_manager.html')
+    return render_template ('dashboard_manager.html',manager=session['nombre'])
 
 @app.route('/dashboard_assistant')
 @requires_access_level('Asistente')
 def dashboard_assistant ():
-    return render_template ('dashboard_assistant.html')
+    return render_template ('dashboard_assistant.html',asistente=session['nombre'])
 
 @app.route('/search',methods =['POST', 'GET'])
 def search():
@@ -373,8 +375,10 @@ def busqueda_fechas_assistant():
 @app.route('/busqueda_fechas_doctor', methods=['POST', 'GET'])
 def busqueda_fechas_doctor():
     if request.method == 'POST':
-        fecha1=request.form.get('fecha',False)
+        fecha1 = request.form.get('fecha',False)
         fecha2 = request.form.get('fecha2', False)
+        session['fecha1'] = fecha1
+        session['fecha2'] = fecha2
         cur = mysql.connection.cursor()
         cur.callproc('busqueda_fechas_doctor',[fecha1,fecha2,session['ID'],session['sucursal']])
         datos = cur.fetchall()
@@ -414,6 +418,35 @@ def comprobante_pdf():
 def cancelar_cita_pdf():
     pdf=Files.cancelar_cita_pdf()
     return pdf
+@app.route('/pdf_doctor')
+def pdf_doctor():
+    pdf=Files.citas_doctor()
+    return pdf
+
+@app.route('/excel_doctor')
+def excel_doctor():
+    xls=Files.citas_doctor_excel()
+    return xls
+
+@app.route('/busqueda_asistente_consultorio_doctor', methods=['POST', 'GET'])
+def busqueda_asistente_consultorio_doctor():
+    if request.method == 'POST':
+        busqueda= request.form.get("buscar",False)
+        filtro= request.form.get("check",False)
+        busqueda= string.capwords(busqueda)
+        session['x'] = busqueda
+        session['y'] = filtro
+        cur = mysql.connection.cursor()
+        cur.callproc('busqueda_cita',[busqueda,filtro,session['sucursal']])
+        datos = cur.fetchall()
+        cur.close()
+        mysql.connection.commit()
+        print(busqueda)
+        print(filtro)
+        print(datos)
+        return render_template('appointments_assistant.html', datos=datos)
+
+
 
 @app.route('/edit_employee/<id>',methods =['POST', 'GET'])
 def obtener_id(id):
