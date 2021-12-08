@@ -180,8 +180,16 @@
                     <div class="mb-3"><input type="text" name="nombre" class="form-control" placeholder="Ingresa tu nombre" required /></div>
                     <div class="mb-3"><input type="text" name="apellido" class="form-control" placeholder="Ingresa tu apellido" required /></div>
                     <div class="mb-3"><input type="tel" name="telefono" class="form-control" placeholder="Ingresa tu télefono" required /></div>
-                    <div><input class="form-control" name="fecha" type="date" min="2021-08-01" max="2022-12-30" required/></div>
-                    <div style="margin-top: 10px"><input class="form-control" name="hours" type="time" min="09:00" max="20:00" required /></div>
+                    <div><input class="form-control" name="fecha" id="datefield" type="date" min="2021-08-01" max="2022-12-30" required/></div>
+                    <small class="form-text">¿En qué turno deseas tu cita?</small>
+                    <div class="form-check"><input type="radio" class="form-check-input" id="prueba" name="check1" value="1" required onchange="javascript:showContent1()" /><label class="form-check-label" for="check">Matutino</label></div>
+                    <div class="form-check"><input type="radio" class="form-check-input" id="prueba2" name="check1" value="1" required onchange="javascript:showContent1()" /><label class="form-check-label" for="check-2">Vespertino</label></div>
+
+                    <div style="margin-top: 10px; display:none;" id="contenido"><input class="form-control"  type="time" min="09:00" max="14:00" id="datetime1"/></div>
+                    
+                    <div style="margin-top: 10px; display:none;" id="contenido1"><input class="form-control" type="time" min="15:00" max="20:00" id="datetime2"/></div>
+
+
                     <!--Correccion lista-->
                    <!-- <div><select class="form-select" name="sucursal" required style="background: rgb(247,249,252);margin-top: 7px;border-style: none;">
                         <optgroup label="--Clínica--">
@@ -312,6 +320,26 @@
             }
         }
 
+
+        function showContent1() {
+            elements = document.getElementById("contenido");
+            elements1 = document.getElementById("contenido1");
+            check3 = document.getElementById("prueba");
+            check4 = document.getElementById("prueba2");
+            if (check3.checked) {
+                elements.style.display='block';
+                elements1.style.display='none';
+                document.getElementById("datetime1").setAttribute("name","hours");
+                document.getElementById("datetime2").removeAttribute('name');
+            }
+            else {
+                elements.style.display='none';
+                elements1.style.display='block';
+                document.getElementById("datetime2").setAttribute("name","hours");
+                document.getElementById("datetime1").removeAttribute('name');
+            }
+        }
+
         // Cuando el usuario se desplaza hacia abajo 20 px desde la parte superior del documento, muestra el botón
         window.onscroll = function() {scrollFunction()};
 
@@ -328,6 +356,22 @@
           document.body.scrollTop = 0; // Para safari
           document.documentElement.scrollTop = 0; // Para Chrome, Firefox, IE y Opera
         }
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+           dd = '0' + dd;
+        }
+
+        if (mm < 10) {
+           mm = '0' + mm;
+        }
+
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("datefield").setAttribute("min", today);
             </script>
 </body>
 

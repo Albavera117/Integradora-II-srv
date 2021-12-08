@@ -1,6 +1,7 @@
 {% for row in citas %} 
 <table border='0' width='100%'>
     <tr>
+{% if row.10 == "Activa" %}
         <td style="padding:20px;">
         <p><strong>Nombre</strong> : {{row.2}}</p>
         <p><strong>Turno</strong>: {{row.3}}</p>
@@ -18,9 +19,20 @@
         {% if row.12 == row.9 %}
         <p><strong>Estado de Cuenta</strong>: PAGADO </p>
         {% endif %}
+        
+{% endif %}
+
+
+{% if row.10 == "Cancelada"%}
+        <td style="padding:20px;">
+        <p><strong>Nombre</strong> : {{row.2}}</p>
+        <p><strong>Turno</strong>: {{row.3}}</p>
+        <p><strong>Estatus Cita</strong>: {{row.10}}</p>
+{% endif %}
+{% endfor %}
 
         <p><strong>Servicio | Costo</strong>:</p>
-{% endfor %}
+
 
 {% for service in servicios %} 
         <p>{{service.0}} | ${{service.1}}</p>

@@ -1,112 +1,51 @@
+<form method="POST" action="/editar/empleado">
+{% for dato in datos %}
 
- {% extends 'base/base_dashboard_manager.html' %}
- {% block content %}
- {% with mensaje = get_flashed_messages() %}
-{% if mensaje %}
-{% for mensajes in mensaje %}
-    <center>
-    <div class="alert alert-primary" role="alert">
-        <strong>{{mensajes}}</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div></center>
+    <form action="/edit_employee/{{id}}" method="post" >
+    <h1>&nbsp;DentalCare&nbsp;<i class="fas fa-tooth"></i></h1>
+    <div class="form-group">
+    <div class="col-sm-12 label-column"><label class="col-form-label" for="name-input-field">Nombre(s) </label></div>
+    <div class="col-sm-12 input-column"><input class="form-control" name="nombre" type="text" placeholder="Ingresa tu nombre(s)" required="" value="{{dato.7}}"></div>
+    </div>
+
+
+    <div class="form-group">
+    <div class="col-sm-12 label-column"><label class="col-form-label" for="name-input-field">Apellidos</label></div>
+    <div class="col-sm-12 input-column"><input class="form-control" name="apellido" type="text" placeholder="Ingresa tus apellidos" required="" value="{{dato.8}}"></div></div>
+
+    <div class="form-group">
+    <div class="col-sm-12 label-column"><label class="col-form-label" for="email-input-field">Correo</label></div>
+    <div class="col-sm-12 input-column"><input class="form-control" name="email" type="email" inputmode="email" required="" placeholder="Ingresa el correo" value="{{dato.2}}"></div>
+    </div>
+
+
+    <div class="form-group">
+    <div class="col-sm-12 label-column"><label class="col-form-label">Teléfono</label></div>
+    <div class="col-sm-12 input-column"><input class="form-control" name="phone" type="tel" inputmode="numeric" required="" placeholder="Ingresa el teléfono" value="{{dato.1}}"></div>
+    </div>
+
+
+    <div class="form-group">
+    <div class="col-sm-12 label-column"><label class="col-form-label" for="name-input-field">Estatus</label></div>
+    <div class="col-sm-12 input-column"><select class="form-select" name="estatus" value="{{dato.3}}" >
+        <option hidden selected="true">{{dato.3}}</option>
+        <option name="estatus" >Activo</option>
+        <option name="estatus" >Inactivo</option>
+    </select></div>
+    </div>
+
+    <div class="form-group">
+    <div class="col-sm-12 label-column"><label class="col-form-label" for="repeat-pawssword-input-field">Contraseña</label></div>
+
+    <div class="col-sm-12 input-column"><input class="form-control" name="password" type="password" placeholder="Ingresa la contraseña" minlength="5" maxlength="16"></div>
+    </div>
 
 {% endfor %}
-{% endif %}
-{% endwith %}
-
-                <div class="container-fluid">
-                    <h3 class="text-dark mb-4">Registro Empleado</h3>
-                    <div class="card shadow">
-                        <div class="card-header py-3">
-                            <p class="text-primary m-0 fw-bold">Ingresa la siguiente información</p>
-                        </div>
-                        <div class="card-body">
-                            <div class="row register-form">
-                                <div class="col-md-8 offset-md-2">
-                                    <form class="custom-form" action="/edit_employee/{{id}}" method="post" >
-                                        <h1>&nbsp;DentalCare&nbsp;<i class="fas fa-tooth"></i></h1>
-                                        <div class="row form-group">
-                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Nombre(s) </label></div>
-                                            <div class="col-sm-6 input-column"><input class="form-control" name="nombre" type="text" placeholder="Ingresa tu nombre(s)" required="" value="{{dato.7}}"></div>
-                                        </div>
-                                        <div class="row form-group">
-                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Apellidos</label></div>
-                                            <div class="col-sm-6 input-column"><input class="form-control" name="apellido" type="text" placeholder="Ingresa tus apellidos" required="" value="{{dato.8}}"></div></div>
-                                        <div class="row form-group">
-                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="email-input-field">Correo</label></div>
-                                            <div class="col-sm-6 input-column"><input class="form-control" name="email" type="email" inputmode="email" required="" placeholder="Ingresa el correo" value="{{dato.2}}"></div>
-                                        </div>
-                                        <div class="row form-group">
-                                            <div class="col-sm-4 label-column"><label class="col-form-label">Teléfono</label></div>
-                                            <div class="col-sm-6 input-column"><input class="form-control" name="phone" type="tel" inputmode="numeric" required="" placeholder="Ingresa el teléfono" value="{{dato.1}}"></div>
-                                        </div>
-                                      <!-- <div class="row form-group">
-                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Puesto</label></div>
-                                            <div class="col-sm-6 input-column"><select class="form-select" name="position" value="{{dato.4}}" >
-                                                 <option hidden selected="true">{{dato.4}}</option>
-                                                     {% for opcion in opcion %}
-
-                                                        <option name="position" >{{opcion.0}}</option>
-                                                    {% endfor %}
-
-                                                </select></div>
-                                        </div> -->
-
-                                        <div class="row form-group">
-                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Estatus</label></div>
-                                            <div class="col-sm-6 input-column"><select class="form-select" name="estatus" value="{{dato.3}}" >
-                                                 <option hidden selected="true">{{dato.3}}</option>
-
-                                                        <option name="estatus" >Activo</option>
-                                                        <option name="estatus" >Inactivo</option>
-
-                                                </select></div>
-                                        </div>
-
-
-
-                                        <!-- <div class="row form-group">
-                                            <p>¿Agregar consultorio?</p>
-
-                                            <div>
-                                            <input type="radio"  id="check" name="check" value="1" required onchange="javascript:showContent()">
-                                            <label for="check">Sí</label>
-                                            </div>
-
-                                            <div>
-                                            <input type="radio" id="check-2" name="check" value="1" required onchange="javascript:showContent()" checked>
-                                            <label for="check-2">No</label>
-                                            </div>
-                                        </div> -->
-                                       <!-- <div class="row form-group" id="content2">
-                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Consultorio</label></div>
-                                    <div class="col-sm-6 input-column" ><select class="form-select"  disabled id="formu" name="consultorio"> -->
-                                               <!-- <option value="1">Consultorio 1</option>
-                                                <option value="1" >Consultorio 2</option> 
-                                                {% for opcion3 in opcion3 %}
-                                                <option value="{{opcion3.0}}" >{{opcion3.0}}</option>
-                                                {% endfor %}
-
-                                        </select></div>
-
-                                        </div> -->
-                                       <!-- <div class="row form-group">
-                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Sucursal</label></div>
-                                            <div class="col-sm-6 input-column"><select class="form-select"  name="branch">
-                                                    {% for opcion2 in opcion2 %}
-                                                        <option value="{{opcion3.1}}" >{{opcion2.0}}</option>
-                                                    {% endfor %}
-                                                </select></div>
-                                        </div> -->
-                                        <div class="row form-group">
-                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="repeat-pawssword-input-field">Contraseña</label></div>
-                                            <div class="col-sm-6 input-column"><input class="form-control" name="password" type="password" placeholder="Ingresa la contraseña" minlength="5" maxlength="16"></div>
-                                        </div><button class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);" data-bs-target=".hyml">Registrar</button>
-                                    </form>
-                                </div>
-                            </div>
+    <div class="modal-footer">
+    <button class="btn btn-primary" name="id" value="{{id}}" type="submit" style="background: rgb(26, 32, 46);" data-bs-target=".hyml">Registrar</button>
+    <button type="button" class="btn btn-primary" style="background: rgb(26, 32, 46);"  data-dismiss="modal" onClick="cerrar()">Cerrar</button>
+    </div>
+    </form>
                             <script type="text/javascript">
                                 function showContent() {
                                     element = document.getElementById("content2");
@@ -127,6 +66,11 @@
 
 
                                 }
-                        </script>
 
-                {% endblock %}
+    function cerrar(){
+  $("#empModal").modal('hide');//ocultamos el modal
+  $(".modal-body1").drop('hide');//ocultamos el modal
+
+
+}
+                        </script>

@@ -365,7 +365,7 @@ def download_report_pdf_manager():
             self.set_font('Arial', 'B', 25)
 
             # Title
-            self.cell(w=0, h=20, txt='Reporte Empleados '+str(today), border=0, ln=1,
+            self.cell(w=0, h=20, txt='Reporte Citas '+str(today), border=0, ln=1,
                       align='C', fill=0)
 
             # Line break
@@ -869,7 +869,7 @@ def cancelar_cita_pdf():
         def header(self):
             self.image('static/dashboard/img/2.png', x=10, y=10, w=20, h=20)
             self.set_font('Arial', 'B', 25)
-            self.cell(w=0, h=20, txt='Comprobante de Cita ' , border=0, ln=1,
+            self.cell(w=0, h=20, txt='Comprobante de Cancelación de Cita ' , border=0, ln=1,
                       align='C', fill=0)
             self.ln(5)
         def footer(self):
@@ -916,7 +916,7 @@ def cancelar_cita_pdf():
     pdf.multi_cell(col_width4, h=9, txt=str(datos[0][10]), border=1, fill=0)
 
     pdf = Response(pdf.output(dest='S').encode('latin-1'), mimetype='application/pdf',
-                   headers={'Content-Disposition': 'attachment;filename=Comprobante_Cita.pdf'})
+                   headers={'Content-Disposition': 'attachment;filename=Comprobante_Cita_Cancelada.pdf'})
     return pdf
 
 def citas_doctor():
@@ -934,7 +934,7 @@ def citas_doctor():
             self.image('static/dashboard/img/2.png', x=10, y=10, w=20, h=20)
             self.set_font('Arial', 'B', 25)
             # Title
-            self.cell(w=0, h=20, txt='Reporte Empleados ' + str(today), border=0, ln=1,
+            self.cell(w=0, h=20, txt='Reporte Citas ' + str(today), border=0, ln=1,
                       align='C', fill=0)
             # Line break
             self.ln(5)
@@ -1062,7 +1062,7 @@ def citas_doctor():
         pdf.multi_cell(col_width4, h=5, txt="Ingresos generados: " + "$" + str(suma_dinero) + " pesos", border=0,
                        fill=0)
     pdf = Response(pdf.output(dest='S').encode('latin-1'), mimetype='application/pdf',
-                   headers={'Content-Disposition': 'attachment;filename=Employee_Report.pdf'})
+                   headers={'Content-Disposition': 'attachment;filename=Appointments_Report.pdf'})
     return pdf
 
 def citas_doctor_excel():

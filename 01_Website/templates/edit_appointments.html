@@ -1,0 +1,78 @@
+<form method="POST" action="/editar/cita">
+{% for row in appointments %} 
+          <div class="form-group">
+            <div class="col-sm-12 label-column"><label class="col-form-label">Folio</label></div>
+              <div class="col-sm-12 input-column"><input class="form-control" name="folio" type="tel" inputmode="numeric" required="" value="{{row.0}}" readonly>
+              </div>
+              </div>
+
+          <div class="form-group">
+            <div class="col-sm-12 label-column"><label class="col-form-label">Duración Cita (Minutos)</label></div>
+              <div class="col-sm-12 input-column"><input class="form-control" name="duracion" required="" placeholder="Ingresa Costo" value="{{row.8}}">
+              </div>
+              </div>
+
+          <div class="form-group">
+            <div class="col-sm-12 label-column"><label class="col-form-label">Nombre(s) Paciente</label></div>
+              <div class="col-sm-12 input-column"><input class="form-control" name="nombre" required="" placeholder="Ingresa Nombre del Paciente" value="{{row.14}}">
+              </div>
+              </div>
+
+          <div class="form-group">
+            <div class="col-sm-12 label-column"><label class="col-form-label">Apellidos Paciente</label></div>
+              <div class="col-sm-12 input-column"><input class="form-control" name="apellidos" required="" placeholder="Ingresa Apellidos del Paciente" value="{{row.15}}">
+              </div>
+              </div>
+
+          <div class="form-group">
+            <div class="col-sm-12 label-column"><label class="col-form-label">Teléfono</label></div>
+              <div class="col-sm-12 input-column"><input class="form-control" name="telefono" type="tel" inputmode="numeric" required="" placeholder="Ingresa el teléfono" value="{{row.4}}">
+              </div>
+              </div>
+
+
+          <div class="form-group">
+            <div class="col-sm-12 label-column"><label class="col-form-label" for="name-input-field">Estatus</label></div>
+              <div class="col-sm-12 input-column"><select class="form-select" name="estatus" value="{{row.10}}" >
+                <option hidden selected="true">{{row.10}}</option>
+                <option name="estatus" >Activa</option>
+                <option name="estatus" >Cancelada</option>
+                <option name="estatus" >Atendida</option>
+                </select></div>
+             </div>
+
+          <div class="form-group">
+            <div class="col-sm-12 label-column"><label class="col-form-label" for="email-input-field" >Fecha</label></div>
+              <div class="col-sm-12 input-column"><input class="form-control" name="fecha" id="datefield" type="date" min="2021-08-01" max="2022-12-30" required value="{{row.16}}" /></div>
+              </div>
+
+
+          <div class="form-group">
+            <div class="col-sm-12 label-column"><label class="col-form-label" for="email-input-field" >Hora</label></div>
+              <div class="col-sm-12 input-column"><input name="hora" class="form-control" type="time" min="09:00" max="20:00" required value="{{row.17}}"></div>
+              </div>
+
+
+          <div class="form-group">
+            <div class="col-sm-12 label-column"><label class="col-form-label">Costo</label></div>
+              <div class="col-sm-12 input-column"><input class="form-control" name="costo" required="" placeholder="Ingresa Costo" value="{{row.9}}">
+              </div>
+              </div>
+        
+
+{% endfor %}
+
+<div class="modal-footer">
+<button type="button" class="btn btn-primary" data-dismiss="modal" onClick="cerrar1()" style="background: rgb(26, 32, 46);" >Cerrar</button>
+<button type="submit" class="btn btn-primary" style="background: rgb(26, 32, 46);">Aceptar</button>
+</div>
+</form>
+
+
+<script type="text/javascript">
+  function cerrar1(){
+  $("#exampleModal1").modal('hide');//ocultamos el modal
+  $(".modal-body2").drop('hide');//ocultamos el modal
+}
+
+</script>

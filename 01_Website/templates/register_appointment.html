@@ -41,11 +41,21 @@
                                         </div>
                                         <div class="row form-group">
                                             <div class="col-sm-4 label-column"><label class="col-form-label" for="email-input-field" >Fecha</label></div>
-                                            <div class="col-sm-6 input-column"><input class="form-control" name="fecha" type="date" min="2021-08-01" max="2022-12-30" required/></div>
+                                            <div class="col-sm-6 input-column"><input class="form-control" name="fecha"  type="date" min="2021-08-01" id="datefield" max="2022-12-30" required/></div>
                                         </div>
-                                        <div class="row form-group">
+
+                                        <p>¿En qué turno deseas tu cita?</p>
+                                        <div class="form-check"><input type="radio" class="form-check-input" id="prueba" name="check1" value="1"  onchange="javascript:showContent1()" /><label class="form-check-label" for="check">Matutino</label></div>
+                                        <div class="form-check"><input type="radio" class="form-check-input" id="prueba2" name="check1" value="1"  onchange="javascript:showContent1()" /><label class="form-check-label" for="check-2">Vespertino</label></div>
+
+                                        <div class="row form-group" id="contenido" style="display:none;">
                                             <div class="col-sm-4 label-column"><label class="col-form-label" for="email-input-field" >Hora</label></div>
-                                            <div class="col-sm-6 input-column"><input name="hours" class="form-control" type="time" min="09:00" max="20:00" required></div>
+                                            <div class="col-sm-6 input-column"><input class="form-control" type="time" min="09:00" max="14:00" id="datetime1" ></div>
+                                        </div>
+
+                                        <div class="row form-group" id="contenido1" style="display:none;">
+                                            <div class="col-sm-4 label-column"><label class="col-form-label" for="email-input-field" >Hora</label></div>
+                                            <div class="col-sm-6 input-column"><input class="form-control" type="time" min="15:00" max="20:00" id="datetime2" ></div>
                                         </div>
                                        <!-- <div class="row form-group">
                                             <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Sucursal</label></div>
@@ -80,9 +90,9 @@
                                                     <label for="check-2">No</label>
                                                     </div>
                                                 </div>
-                                                <div class="row form-group" id="content2">
+                                                <div class="row form-group" id="content2" style="display:none;">
                                                     <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Tipo consulta&nbsp;</label></div>
-                                            <div class="col-sm-6 input-column" ><select class="form-select"  disabled id="formu" name="servicio2">
+                                            <div class="col-sm-6 input-column" ><select class="form-select" name="servicio2">
                                                    {% for opcion in opcion %}
                                                         <option name="servicio2" >{{opcion.0}}</option>
                                                     {% endfor %}
@@ -101,16 +111,59 @@
                                     check2 = document.getElementById("check-2");
                                     formu = document.getElementById("formu");
                                     
-                                    q= document.getElementById("q");
                                     if (check.checked) {
-                                        document.getElementById("formu").removeAttribute('disabled');
+                                        document.getElementById("content2").style.display="flex";;
                                                                             
-                                        console.log("Hola")}
+                                    }
                                     if(check2.checked) {
                                       
-                                        document.getElementById("formu").setAttribute("disabled","");
+                                        document.getElementById("content2").style.display="none";;
                                        
                                     }
+                        
+                                   
                                 }
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+
+        if (dd < 10) {
+           dd = '0' + dd;
+        }
+
+        if (mm < 10) {
+           mm = '0' + mm;
+        }
+
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("datefield").setAttribute("min", today);
+                     
+
+function showContent1() {
+            elements = document.getElementById("contenido");
+            elements1 = document.getElementById("contenido1");
+            check3 = document.getElementById("prueba");
+            check4 = document.getElementById("prueba2");
+            if (check3.checked) {
+                elements.style.display='flex';
+                elements1.style.display='none';
+                document.getElementById("datetime1").setAttribute("name","hours");
+                document.getElementById("datetime1").setAttribute("required","");
+                document.getElementById("datetime2").removeAttribute('name');
+                document.getElementById("datetime2").removeAttribute("required");
+            }
+            else {
+                elements.style.display='none';
+                elements1.style.display='flex';
+                document.getElementById("datetime2").setAttribute("name","hours");
+                document.getElementById("datetime2").setAttribute("required","");
+                document.getElementById("datetime1").removeAttribute('name');
+                document.getElementById("datetime1").removeAttribute("required");
+            }
+        }
+
+
                         </script>
-                {% endblock %}
+                {% endblock %}   

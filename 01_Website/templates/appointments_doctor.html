@@ -78,19 +78,48 @@
                                         <tr></tr>
                                     </tfoot>
                                 </table>
+
+
                             </div><a href="/pdf_doctor"   class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);">Generar Reporte(pdf)  <i class="fas fa-file-pdf fa-sm text-white-50"></i></a> <a href="/excel_doctor"   class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);">Generar Reporte(Excel)  <i class="fas fa-file-excel fa-sm text-white-50"></i></a>
+                            <button class="btn btn-primary" type="button" style="background: rgb(26, 32, 46);" data-target="#exampleModal" data-toggle="modal" >Pagar <i class="fas fa-money-bill-alt fa-sm text-white-50"></i></button>
                         </div>
                         </div>
 
                 </div>
-
+                                             <!--Modal para pagar cita-->
+                                            <div class="modal bd-example-modal-sm" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                  <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Pagar cita</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                      <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                    <form action="/appointments_doctor" method="POST">
+                                                      <div class="form-group">
+                                                        <label for="recipient-name" class="col-form-label">Ingresa tu Folio de Cita:</label>
+                                                        <input type="text" name="folio" class="form-control" id="recipient-name">
+                                                          <label for="recipient-name" class="col-form-label">Ingresa el monto a pagar:</label>
+                                                        <input type="text" name="pago" class="form-control" id="recipient-tel">
+                                                      </div>
+                                                      <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-primary" style="background: rgb(26, 32, 46);">Aceptar</button>
+                                                      </div>
+                                                    </form>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
 
            <script type='text/javascript'>
             $(document).ready(function(){
                 $('.appointmentinfo').click(function(){
                     var citaid = $(this).data('id');
                     $.ajax({
-                        url: '/ajaxfile',
+                        url: '/ajaxdetalles',
                         type: 'post',
                         data: {citaid: citaid},
                         success: function(data){ 
@@ -129,7 +158,7 @@ function cerrar(){
         ...
       </div>
       <div class="modal-footer">
-        <button onClick="cerrar()" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button onClick="cerrar()" type="button" class="btn btn-secondary" data-dismiss="modal" style="background: rgb(26, 32, 46);">Cerrar</button>
       </div>
     </div>
   </div>

@@ -6,7 +6,7 @@
                {% if mensaje %}
                {% for mensajes in mensaje %}
                 <center>
-                    <div class="alert alert-success" role="alert">
+                    <div class="alert alert-primary" role="alert">
                         <strong>{{mensajes}}</strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -31,7 +31,7 @@
                                                     <p class="fw-bold">Buscar por:</p>
 
                                                     <div>
-                                                        <form action="/busqueda_asistente_consultorio_doctor" class="custom-form" method="post">
+                                                        <form id="form-action" class="custom-form" method="post">
                                                     <input type="radio"  id="check" name="check" value="1" required onchange="javascript:showContent()">
                                                     <label for="check">Periodo de tiempo </label>
                                                             <input type="radio" id="check2" name="check" value="1" required onchange="javascript:showContent()" >
@@ -58,7 +58,7 @@
                                 <table class="table my-0" id="dataTable">
                                     <thead>
                                         <tr>
-                                         <th>Folio</th>
+                                            <th>Folio</th>
                                             <th>Nombre Paciente</th>
                                             <th>Teléfono</th>
                                             <th>Consultorio</th>
@@ -84,12 +84,21 @@
                                             <td><button data-id='{{fila.0}}' class="appointmentinfo btn btn-primary" type="button" style="background: rgb(26, 32, 46);">
                                             Detalles
                                             </button></td>
-                                            <td><button class="btn btn-primary" type="button" style="background: rgb(26, 32, 46);">Editar</button></td>
+                                            <td><button data-id="{{fila.0}}" class="editappointment btn btn-primary" type="button" style="background: rgb(26, 32, 46);">Editar</button></td>
                                         </tr>
                                         {% endfor %}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr></tr>
+                                    </tfoot>
+                                </table>
+                            </div><button class="btn btn-primary" type="button" style="background: rgb(26, 32, 46);" data-target="#exampleModal" data-toggle="modal" >Pagar <i class="fas fa-money-bill-alt fa-sm text-white-50"></i></button>
+                        </div>
+                    </div>
+                </div>
 
                                              <!--Modal para pagar cita-->
-                                            <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+                                            <div class="modal bd-example-modal-sm" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                   <div class="modal-header">
@@ -107,8 +116,8 @@
                                                         <input type="text" name="pago" class="form-control" id="recipient-tel">
                                                       </div>
                                                       <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                                                        <button type="button" style="background: rgb(26, 32, 46);" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-primary" style="background: rgb(26, 32, 46);">Aceptar</button>
                                                       </div>
                                                     </form>
                                                   </div>
@@ -116,24 +125,12 @@
                                               </div>
                                             </div>
 
-                                        
-                                    </tbody>
-                                    <tfoot>
-                                        <tr></tr>
-                                    </tfoot>
-                                </table>
-                            </div><button class="btn btn-primary" type="button" style="background: rgb(26, 32, 46);" data-target="#exampleModal" data-toggle="modal" >Pagar <i class="fas fa-money-bill-alt fa-sm text-white-50"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-
            <script type='text/javascript'>
             $(document).ready(function(){
                 $('.appointmentinfo').click(function(){
                     var citaid = $(this).data('id');
                     $.ajax({
-                        url: '/ajaxfile',
+                        url: '/ajaxdetalles',
                         type: 'post',
                         data: {citaid: citaid},
                         success: function(data){ 
@@ -145,10 +142,25 @@
                 });
             });
 
+            $(document).ready(function(){
+                $('.editappointment').click(function(){
+                    var citaid = $(this).data('id');
+                    $.ajax({
+                        url: '/ajaxeditar',
+                        type: 'post',
+                        data: {citaid: citaid},
+                        success: function(data){ 
+                            $('.modal-body2').html(data); 
+                            $('.modal-body2').append(data.htmlresponse);
+                            $('#exampleModal1').modal('show');
+                        }
+                    });
+                });
+            });
 
 function cerrar(){
   $("#empModal").modal('hide');//ocultamos el modal
-  $(".modal-body").drop('hide');//ocultamos el modal
+  $(".modal-body1").drop('hide');//ocultamos el modal
 
 
 }
@@ -158,7 +170,7 @@ function cerrar(){
 
 
 
-<!-- Modal -->
+<!-- Modal Detalles Cita-->
 <div class="modal fade" id="empModal" tabindex="-1" role="dialog" tabindex="-1" role="dialog"  data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -172,7 +184,24 @@ function cerrar(){
         ...
       </div>
       <div class="modal-footer">
-        <button onClick="cerrar()" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button onClick="cerrar()" type="button" class="btn btn-secondary" style="background: rgb(26, 32, 46);" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--- Modal Editar Cita -->
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar Cita</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick="cerrar1()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body2">
+
       </div>
     </div>
   </div>
@@ -181,45 +210,53 @@ function cerrar(){
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
                    <script type="text/javascript">
-                                function showContent() {
-                                    element = document.getElementById("content2");
-                                    check = document.getElementById("check");
-                                    check2 = document.getElementById("check2");
-                                    check3 = document.getElementById("check3");
-                                     check4 = document.getElementById("check4");
-                                    formu = document.getElementById("formu");
-                                    formu2 = document.getElementById("formu2");
-                                    formu3 = document.getElementById("formu3");
 
-                                    q= document.getElementById("q");
-                                    if (check.checked) {
-                                        document.getElementById("formu").removeAttribute('disabled');
-                                        document.getElementById("formu2").removeAttribute('disabled');
-                                        document.getElementById("formu3").setAttribute("disabled","");
+function cerrar(){
+  $("#empModal").modal('hide');//ocultamos el modal
+  $(".modal-body").drop('hide');//ocultamos el modal
+}
 
 
+                    
+                        function showContent() {
+                            element = document.getElementById("content2");
+                            check = document.getElementById("check");
+                            check2 = document.getElementById("check2");
+                            check3 = document.getElementById("check3");
+                            check4 = document.getElementById("check4");
+                            formu = document.getElementById("formu");
+                            formu2 = document.getElementById("formu2");
+                            formu3 = document.getElementById("formu3");
 
+                            q= document.getElementById("q");
+                            if (check.checked) {
+                            document.getElementById("formu").removeAttribute('disabled');
+                            document.getElementById("formu2").removeAttribute('disabled');
+                            document.getElementById("formu3").setAttribute("disabled","");
+                            document.getElementById("form-action").action = "/busqueda_fechas_assistant";
+}
+                            if(check2.checked) {
 
-                                        console.log("Hola")}
-                                    if(check2.checked) {
-
-                                        document.getElementById("formu").removeAttribute('disabled');
-                                        document.getElementById("formu2").setAttribute("disabled","");
-                                        document.getElementById("formu3").setAttribute("disabled","");
+                            document.getElementById("formu").removeAttribute('disabled');
+                            document.getElementById("formu2").setAttribute("disabled","");
+                            document.getElementById("formu3").setAttribute("disabled","");
+                            document.getElementById("form-action").action = "/busqueda_fechas_assistant";
 
                                     }
-                                    if(check3.checked) {
+                            if(check3.checked) {
 
-                                        document.getElementById("formu3").removeAttribute('disabled');
-                                        document.getElementById("formu2").setAttribute("disabled","");
-                                         document.getElementById("formu").setAttribute("disabled","");
+                            document.getElementById("formu3").removeAttribute('disabled');
+                            document.getElementById("formu2").setAttribute("disabled","");
+                            document.getElementById("formu").setAttribute("disabled","");
+                            document.getElementById("form-action").action = "/busqueda_asistente_consultorio_doctor";
 
                                     }
-                                    if(check4.checked) {
+                            if(check4.checked) {
 
-                                        document.getElementById("formu3").removeAttribute('disabled');
-                                        document.getElementById("formu2").setAttribute("disabled","");
-                                         document.getElementById("formu").setAttribute("disabled","");
+                            document.getElementById("formu3").removeAttribute('disabled');
+                            document.getElementById("formu2").setAttribute("disabled","");
+                            document.getElementById("formu").setAttribute("disabled","");
+                            document.getElementById("form-action").action="/busqueda_asistente_consultorio_doctor";
 
                                     }
 

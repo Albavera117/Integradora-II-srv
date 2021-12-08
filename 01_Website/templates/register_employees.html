@@ -42,32 +42,21 @@
                                             <div class="col-sm-4 label-column"><label class="col-form-label">Teléfono</label></div>
                                             <div class="col-sm-6 input-column"><input class="form-control" name="phone" type="tel" inputmode="numeric" required="" placeholder="Ingresa el teléfono"></div>
                                         </div>
-                                        <div class="row form-group">
+                                        <div class="row form-group" >
                                             <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Puesto</label></div>
-                                            <div class="col-sm-6 input-column"><select class="form-select" name="position">
+                                            <div class="col-sm-6 input-column" ><select required="" onchange="javascript:showContent()" id="puesto" class="form-select" name="position">
+                                                <optgroup label="--Puesto--">
+                                                        <option>Selecciona alguno...</option> 
                                                      {% for opcion in opcion %}
-                                                        <option name="position">{{opcion.0}}</option>
+                                                        <option name="position" checked>{{opcion.0}}</option>
                                                     {% endfor %}
-                        
+                                                </optgroup>
                                                 </select></div>
 
                                         </div>
-                                        <div class="row form-group">
-                                            <p>¿Agregar consultorio?</p>
-
-                                            <div>
-                                            <input type="radio"  id="check" name="check" value="1" required onchange="javascript:showContent()">
-                                            <label for="check">Sí</label>
-                                            </div>
-
-                                            <div>
-                                            <input type="radio" id="check-2" name="check" value="1" required onchange="javascript:showContent()" checked>
-                                            <label for="check-2">No</label>
-                                            </div>
-                                        </div>
-                                        <div class="row form-group" id="content2">
+                                        <div class="row form-group" id="content2" style="display:none;">
                                             <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Consultorio</label></div>
-                                    <div class="col-sm-6 input-column" ><select class="form-select"  disabled id="formu" name="consultorio">
+                                    <div class="col-sm-6 input-column" id="Consultorio"><select class="form-select" id="formu" name="consultorio">
                                                <!-- <option value="1">Consultorio 1</option>
                                                 <option value="1" >Consultorio 2</option> -->
                                                 {% for opcion3 in opcion3 %}
@@ -76,7 +65,8 @@
                                          
                                         </select></div>
                                         
-                                        </div>   
+                                        </div>
+                                    <br>
                                        <!-- <div class="row form-group">
                                             <div class="col-sm-4 label-column"><label class="col-form-label" for="name-input-field">Sucursal</label></div>
                                             <div class="col-sm-6 input-column"><select class="form-select"  name="branch">
@@ -88,29 +78,32 @@
                                         <div class="row form-group">
                                             <div class="col-sm-4 label-column"><label class="col-form-label" for="repeat-pawssword-input-field">Contraseña</label></div>
                                             <div class="col-sm-6 input-column"><input class="form-control" name="password" type="password" required="" placeholder="Ingresa la contraseña" minlength="5" maxlength="16"></div>
-                                        </div><button class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);" data-bs-target=".hyml">Registrar</button>
+                                        </div><button onclick="verificar()" class="btn btn-primary" type="submit" style="background: rgb(26, 32, 46);" data-bs-target=".hyml">Registrar</button>
                                     </form>
                                 </div>
                             </div>
                             <script type="text/javascript">
                                 function showContent() {
-                                    element = document.getElementById("content2");
-                                    check = document.getElementById("check");
-                                    check2 = document.getElementById("check-2");
-                                    formu = document.getElementById("formu");
+                                    var variable= document.getElementById('puesto').value;
+                                    console.log(variable);
                                     
-                                    q= document.getElementById("q");
-                                    if (check.checked) {
-                                        document.getElementById("formu").removeAttribute('disabled');
-                                                                            
-                                        console.log("Hola")}
-                                    if(check2.checked) {
-                                      
-                                        document.getElementById("formu").setAttribute("disabled","");
-                                       
-                                    }
-                        
-                                   
+                                    if (variable == "Doctor") {
+                                        document.getElementById("content2").style.display="flex";              
+                                }
+                                    if(variable != "Doctor") {
+                                        document.getElementById("content2").style.display="none"; 
+                                    } 
+                                }
+
+
+                                function verificar(){
+
+                                    var variable = document.getElementById('puesto').value;
+
+                                    if(variable == "Selecciona alguno..."){
+                                        alert("Debes Seleccionar Algun Puesto");
+                                        return false;
+                                    }  
                                 }
                         </script>
 

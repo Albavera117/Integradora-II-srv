@@ -87,7 +87,7 @@
                 $('.appointmentinfo').click(function(){
                     var citaid = $(this).data('id');
                     $.ajax({
-                        url: '/ajaxfile',
+                        url: '/ajaxdetalles',
                         type: 'post',
                         data: {citaid: citaid},
                         success: function(data){ 
@@ -131,7 +131,7 @@ $(window).load(function(){
         ...
       </div>
       <div class="modal-footer">
-        <button onClick="cerrar()" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button style="background: rgb(26, 32, 46);" onClick="cerrar()" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
