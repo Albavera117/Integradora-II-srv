@@ -1,7 +1,8 @@
 {% for row in citas %} 
 <table border='0' width='100%'>
     <tr>
-{% if row.10 == "Activa" %}
+        <h1>&nbsp;DentalCare&nbsp;<i class="fas fa-tooth"></i></h1>
+{% if row.10 == "Activa" or row.10 == "Atendida"%}
         <td style="padding:20px;">
         <p><strong>Nombre</strong> : {{row.2}}</p>
         <p><strong>Turno</strong>: {{row.3}}</p>
@@ -12,18 +13,24 @@
         {% endif %}
 
         {% if row.12 > 0 and row.12 < row.9 %}
-        <p><strong>Total Faltante</strong>: {{row.9-row.12}}</p>
+        <p><strong>Total Faltante</strong>: ${{row.9-row.12}}</p>
         <p><strong>Estado de Cuenta</strong>: PAGADO PARCIALMENTE</p>
+        {% for encargada in encargadas%}
+        <p><strong>Cobrado Por</strong>: {{encargada.0}}</p>
+        {% endfor %}
         {% endif %}
 
         {% if row.12 == row.9 %}
         <p><strong>Estado de Cuenta</strong>: PAGADO </p>
+        {% for encargada in encargadas%}
+        <p><strong>Cobrado Por</strong>: {{encargada.0}}</p>
+        {% endfor %}
         {% endif %}
         
 {% endif %}
 
 
-{% if row.10 == "Cancelada"%}
+{% if row.10 == "Cancelada" %}
         <td style="padding:20px;">
         <p><strong>Nombre</strong> : {{row.2}}</p>
         <p><strong>Turno</strong>: {{row.3}}</p>

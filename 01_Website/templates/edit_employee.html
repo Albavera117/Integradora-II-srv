@@ -1,7 +1,5 @@
 <form method="POST" action="/editar/empleado">
 {% for dato in datos %}
-
-    <form action="/edit_employee/{{id}}" method="post" >
     <h1>&nbsp;DentalCare&nbsp;<i class="fas fa-tooth"></i></h1>
     <div class="form-group">
     <div class="col-sm-12 label-column"><label class="col-form-label" for="name-input-field">Nombre(s) </label></div>
@@ -37,7 +35,7 @@
     <div class="form-group">
     <div class="col-sm-12 label-column"><label class="col-form-label" for="repeat-pawssword-input-field">Contraseña</label></div>
 
-    <div class="col-sm-12 input-column"><input class="form-control" name="password" type="password" placeholder="Ingresa la contraseña" minlength="5" maxlength="16"></div>
+    <div class="col-sm-12 input-column"><input class="form-control" name="password" type="password" placeholder="Ingresa la contraseña" minlength="8" maxlength="25"></div>
     </div>
 
 {% endfor %}

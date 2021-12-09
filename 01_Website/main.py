@@ -157,7 +157,8 @@ def login ():
             emailBD = str(data[0][0])
             passwordBD = str(data[0][1])
             sucursalDB=str(data[0][4])
-            if emailBD == email and passwordBD == password:
+            estatus = str(data[0][6])
+            if emailBD == email and passwordBD == password and estatus=="Activo":
                 #Creacion de sesion
                 session['email'] = email
                 session['sucursal'] = sucursalDB
@@ -170,6 +171,9 @@ def login ():
                     return redirect(url_for('dashboard_manager'))
                 else:
                     return redirect(url_for('dashboard_assistant'))
+            elif estatus=="Inactivo":
+                flash("Usuario Inactivo")
+                return redirect(url_for('login'))
 
         #Datos incorrectos
         flash ("Usuario o contraseña inválido")
@@ -210,6 +214,9 @@ def appointments_assistant ():
             return redirect(url_for('appointments_assistant'))
         elif bool(boleano)==False and numerico==1:
             flash("La Cita con Folio {} Ya se Encuentra Pagada".format(folio))
+            return redirect(url_for('appointments_assistant'))
+        elif bool(boleano)==True and numerico==-1:
+            flash("Debes introducir algún numero positivo")
             return redirect(url_for('appointments_assistant'))
         elif bool(boleano)==True and numerico>0:
             flash("La Cita con Folio {} Ha Sido Pagada - Total de Cambio {}".format(folio,numerico))
@@ -325,6 +332,11 @@ def appointments_doctor ():
     session['fecha1'] = None
     session['fecha2'] = None
     if request.method == 'POST':
+        folio = request.form['folio']
+        pago = request.form['pago']
+        IDuser = session['ID']
+        cur = mysql.connection.cursor()
+        print(pago)
         cur.callproc('pagar',[folio,pago,IDuser])
         tupla = cur.fetchall()
         boleano = tupla[0][0]
@@ -336,6 +348,9 @@ def appointments_doctor ():
            return redirect(url_for('appointments_doctor'))
         elif bool(boleano)==False and numerico==1:
             flash("La Cita con Folio {} Ya se Encuentra Pagada".format(folio))
+            return redirect(url_for('appointments_doctor'))
+        elif bool(boleano)==True and numerico==-1:
+            flash("Debes introducir algún numero positivo")
             return redirect(url_for('appointments_doctor'))
         elif bool(boleano)==True and numerico>0:
             flash("La Cita con Folio {} Ha Sido Pagada - Total de Cambio {}".format(folio,numerico))
@@ -506,9 +521,12 @@ def ajaxdetalles():
         cur.execute("SELECT * FROM appointments WHERE Folio = %s", [userid])
         citas = cur.fetchall()
 
+        cur.execute("SELECT Nombre FROM encargos_pagos WHERE `ID Cita`= %s",[userid])
+        encargadas=cur.fetchall()
+
         cur.execute("SELECT * FROM relationship_appointments WHERE Folio = %s",[userid])
         servicios = cur.fetchall()
-    return render_template('modal.html',citas=citas,servicios=servicios)
+    return render_template('modal.html',citas=citas,servicios=servicios,encargadas=encargadas)
 
 @app.route("/ajaxeditar",methods=["POST","GET"])
 def ajaxeditar():
@@ -518,6 +536,7 @@ def ajaxeditar():
 
         cur.execute("SELECT * FROM appointments WHERE Folio = %s", [userid])
         appointments = cur.fetchall()
+
 
         cur.execute("SELECT * FROM relationship_appointments WHERE Folio = %s",[userid])
         servicios = cur.fetchall()
@@ -534,12 +553,6 @@ def editar_empleado():
         estatus = request.form["estatus"]
         contraseña = request.form.get("password","")
         id = request.form["id"]
-        print(nombre)
-        print(apellidos)
-        print(correo)
-        print(telefono)
-        print(estatus)
-        print(contraseña)
         cur = mysql.connection.cursor()
         cur.callproc('editar_personal',[estatus,nombre,apellidos,correo,telefono,contraseña,id])
         cur.close()

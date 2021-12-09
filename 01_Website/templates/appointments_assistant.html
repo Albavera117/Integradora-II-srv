@@ -107,13 +107,14 @@
                                                       <span aria-hidden="true">&times;</span>
                                                     </button>
                                                   </div>
+                                                  <h1>&nbsp;DentalCare&nbsp;<i class="fas fa-tooth"></i></h1>
                                                   <div class="modal-body">
                                                     <form action="/appointments_assistant" method="POST">
                                                       <div class="form-group">
                                                         <label for="recipient-name" class="col-form-label">Ingresa tu Folio de Cita:</label>
-                                                        <input type="text" name="folio" class="form-control" id="recipient-name">
+                                                        <input type="text" name="folio" class="form-control" id="recipient-name" required="">
                                                           <label for="recipient-name" class="col-form-label">Ingresa el monto a pagar:</label>
-                                                        <input type="text" name="pago" class="form-control" id="recipient-tel">
+                                                        <input type="text" name="pago" class="form-control" id="recipient-tel" required="">
                                                       </div>
                                                       <div class="modal-footer">
                                                         <button type="button" style="background: rgb(26, 32, 46);" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
