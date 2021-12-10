@@ -24,7 +24,7 @@ app = Flask(__name__)
 mysql= MySQL(app)
 
 #Conexion a MySQL
-app.config['MYSQL_HOST'] = 'testdb-1.c9uecaufvfyj.us-east-1.rds.amazonaws.com'
+app.config['MYSQL_HOST'] = 'dentalcarebd.cvuv52n8tzsh.us-east-2.rds.amazonaws.com'
 app.config['MYSQL_USER'] = 'Userdentalcare'
 app.config['MYSQL_PASSWORD'] = 'utez_123?'
 app.config['MYSQL_DB'] = 'dentalcare'
