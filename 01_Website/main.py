@@ -126,7 +126,7 @@ def cancelar_cita():
     elif validar==3:
         cur = mysql.connection.cursor()
         # consulta para crear pdf
-        cur.execute('Folio,Doctor,Paciente,Turno,Telefono,Fecha,`Fecha Cancelación`,Consultorio,`Tiempo Consulta`,Costo,`Estado Cita`,Sucursal,Cobro,ID FROM appointments WHERE Folio=%s', [folio])
+        cur.execute('SELECT Folio,Doctor,Paciente,Turno,Telefono,Fecha,`Fecha Cancelación`,Consultorio,`Tiempo Consulta`,Costo,`Estado Cita`,Sucursal,Cobro,ID FROM appointments WHERE Folio=%s', [folio])
         comprobante2 = cur.fetchall()
         session['cita'] = comprobante2
         # fin consulta pdf
